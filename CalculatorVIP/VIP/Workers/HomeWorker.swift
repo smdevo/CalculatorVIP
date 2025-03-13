@@ -9,7 +9,7 @@ import Foundation
 
 protocol HomeWorkerProtocol {
     func addingBtnToLabel(label: String, labelBtn: String) -> String
-    func calculateTheResult(label: String, labelBtn: String) -> String
+    func calculateTheResult(label: String) -> String
 }
 
 
@@ -33,7 +33,7 @@ extension HomeWorker: HomeWorkerProtocol {
             
       //2
         case "⌫":
-            return label.count == 1 ? "0" : String(label.dropLast())
+            return label.count == 1 ? "0" : label.withoutLastElement
             
        //3
         case "(":
@@ -54,16 +54,16 @@ extension HomeWorker: HomeWorkerProtocol {
         //4
         case ")":
             
-            guard checkingForCloseTheBracket(str: label) else {
+            if !checkingForCloseTheBracket(str: label) {
                 return label
             }
             
-            guard lastElement != "(" else {
+            if lastElement == "(" {
                 return label
             }
             
             if
-                ["÷","×","－","+",","].contains(lastElement) {
+                "÷×－+,".contains(lastElement) {
                 return label.withoutLastElement + ")"
             }
             
@@ -72,7 +72,7 @@ extension HomeWorker: HomeWorkerProtocol {
         //5
         case "÷", "×", "－", "+":
             
-            guard lastElement != "(" else {return label}
+            if lastElement == "(" {return label}
             
             if "÷×－+,".contains(lastElement) {
                 return label.withoutLastElement + labelBtn
@@ -80,17 +80,25 @@ extension HomeWorker: HomeWorkerProtocol {
             
             return label + labelBtn
             
+//        case "－":
+//            
+//            //if lastElement == "(" {return label}
+//            
+//            if "+－,".contains(lastElement) {
+//                return label.withoutLastElement + labelBtn
+//            }
+//            
+//            return label + labelBtn
+            
             
         //6
         case ",":
-            guard !"÷×－+(),".contains(lastElement) else {return label}
             
-            if
-                let lastNumber = gettingLastNumber(str: label),
-                lastNumber.contains(",")
-            {
-                return label
-            }
+            if "÷×－+(".contains(lastElement) {return label + "0,"}
+            
+            if lastElement == ")" {return label + "×0,"}
+            
+            if let lastNumber = gettingLastNumber(str: label), lastNumber.contains(",") {return label}
             
             return label + ","
             
@@ -98,9 +106,7 @@ extension HomeWorker: HomeWorkerProtocol {
         //7
         default:
             
-            if label == "0" {
-                return labelBtn
-            }
+            if label == "0" { return labelBtn }
             
             
             // Case 2: Prevent multiple leading zeros in a number (e.g., "0000,82")
@@ -112,8 +118,7 @@ extension HomeWorker: HomeWorkerProtocol {
             }
             
             if
-                let last = label.last,
-                last == ")"  {
+                lastElement == ")"  {
                 return label + "×" + labelBtn
             }
             
@@ -121,7 +126,7 @@ extension HomeWorker: HomeWorkerProtocol {
         }
     }
      
-    func calculateTheResult(label: String, labelBtn: String) -> String {
+    func calculateTheResult(label: String) -> String {
          
          return "Calculate"
      }

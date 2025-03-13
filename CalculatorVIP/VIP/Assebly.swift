@@ -22,9 +22,7 @@ final class HomeAssambly {
             interactor: interactor,
             router: router
         )
-        
-        //viewController.interactor = interactor
-        
+                
         presenter.view = viewController
         router.viewContreller = viewController
         
