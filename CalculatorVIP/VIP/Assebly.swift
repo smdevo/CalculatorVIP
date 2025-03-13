@@ -16,7 +16,9 @@ final class HomeAssambly {
         
         let router = HomeRouter()
         
-        let interactor = HomeInteractor(presenter: presenter)
+        let worker = HomeWorker()
+        
+        let interactor = HomeInteractor(presenter: presenter, worker: worker)
         
         let viewController = HomeViewController(
             interactor: interactor,

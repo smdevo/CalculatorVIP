@@ -13,12 +13,13 @@ final class HomeInteractor {
     
     //MARK: Dependencies
     private let presenter: HomePresenterProtocol
-    private let worker = HomeWorker()
+    private let worker: HomeWorkerProtocol
     
     //MARK: - Init
     
-    init(presenter: HomePresenterProtocol) {
+    init(presenter: HomePresenterProtocol, worker: HomeWorkerProtocol) {
         self.presenter = presenter
+        self.worker = worker
     }
     
 }

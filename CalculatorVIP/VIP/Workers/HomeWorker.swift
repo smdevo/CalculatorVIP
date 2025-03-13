@@ -14,7 +14,7 @@ protocol HomeWorkerProtocol {
 
 
 final class HomeWorker {
-    
+  
 }
 
 
@@ -80,15 +80,6 @@ extension HomeWorker: HomeWorkerProtocol {
             
             return label + labelBtn
             
-//        case "－":
-//            
-//            //if lastElement == "(" {return label}
-//            
-//            if "+－,".contains(lastElement) {
-//                return label.withoutLastElement + labelBtn
-//            }
-//            
-//            return label + labelBtn
             
             
         //6
