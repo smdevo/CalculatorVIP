@@ -15,13 +15,19 @@ protocol HomeWorkerProtocol {
 
 final class HomeWorker {
   
+    let rpnCalculatorService: RPNServiceProtocol
+    
+    
+    init(rpnCalculatorService: RPNServiceProtocol) {
+        self.rpnCalculatorService = rpnCalculatorService
+    }
 }
 
 
 extension HomeWorker: HomeWorkerProtocol {
     
     func addingBtnToLabel(label: String, labelBtn: String) -> String {
-        
+                
         guard let lastElement = label.last else {return label}
         
         switch labelBtn {
@@ -146,8 +152,9 @@ extension HomeWorker: HomeWorkerProtocol {
     private func gettingLastNumber(str: String) -> String? {
         let operators = CharacterSet(charactersIn: "÷×－+()")
         let components = str.components(separatedBy: operators)
-        
-        return components.last
+        let cleanComps = components.filter({!$0.isEmpty})
+        print(cleanComps)
+        return cleanComps.last
     }
     
 }

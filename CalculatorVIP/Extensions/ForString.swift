@@ -11,4 +11,8 @@ extension String {
         return String(self.dropLast())
     }
     
+    var withoutFirstElement: String {
+        return String(self.dropFirst())
+    }
+    
 }

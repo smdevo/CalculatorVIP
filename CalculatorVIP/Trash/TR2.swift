@@ -11,11 +11,31 @@ class Trash2: UIViewController {
     
     
     override func viewDidLoad() {
-       let _ = convertToRPNStr(str: "(12+9×(4－3))")
+       let _ = convertToInfinix(str: "(5+((((5+3)")//(((((1,0+(29×(4÷8))×43)+5)×(7+4)+3))+
+    
     }
     
     
-    func convertToRPNStr(str: String) -> String {
+    
+    func secondConvert(str: String) {
+        
+        var normalStr: String = ""
+        
+        
+        
+        for el in normalStr {
+            
+            
+            normalStr.append(el)
+            
+            
+        }
+        
+        
+        
+    }
+    
+    func convertToInfinix(str: String) -> String {
         
         var newStr = str
         
@@ -24,7 +44,7 @@ class Trash2: UIViewController {
             return newStr
         }
         
-        print("Count \(extractingComponents(str: newStr).count)")
+        print("First Count \(extractingComponents(str: newStr).count)")
         print(extractingComponents(str: newStr))
 
         
@@ -32,7 +52,29 @@ class Trash2: UIViewController {
             newStr = newStr.withoutLastElement
         }
         
+        while !(newStr.first ?? "0").isNumber {
+            newStr = newStr.withoutFirstElement
+        }
     
+        print("Second Count \(extractingComponents(str: newStr).count)")
+        print(extractingComponents(str: newStr))
+        
+        if newStr.filter({$0 == ")"}).count > newStr.filter({$0 == "("}).count {
+            
+            let bracketsCount = newStr.filter({$0 == ")"}).count - newStr.filter({$0 == "("}).count
+            
+            let brackets = String(Array(repeating: "(", count: bracketsCount))
+            
+            newStr = brackets + newStr
+            
+        }else {
+            let bracketsCount = newStr.filter({$0 == "("}).count - newStr.filter({$0 == ")"}).count
+            
+            let brackets = String(Array(repeating: ")", count: bracketsCount))
+            
+            newStr = newStr + brackets
+        }
+            
         print("Second \(newStr)")
         return newStr
     }
@@ -41,9 +83,9 @@ class Trash2: UIViewController {
     private func extractingComponents(str: String) -> [String] {
         let operators = CharacterSet(charactersIn: "÷×－+()")
         let components = str.components(separatedBy: operators)
-        
         return components.filter {!$0.isEmpty}
     }
+   
 
 }
 

@@ -7,16 +7,22 @@
 
 import Foundation
 
-final class HomeAssambly {
+protocol HomeAssemblyProtocol {
+    func creteCalcHomeViewController() -> HomeViewController
+}
+
+
+final class HomeAssembly: HomeAssemblyProtocol {
     
-    static func assembly() -> HomeViewController {
+     func creteCalcHomeViewController() -> HomeViewController {
         
+        let rpnService = RPNService()
     
         let presenter = HomePresenter()
         
         let router = HomeRouter()
         
-        let worker = HomeWorker()
+        let worker = HomeWorker(rpnCalculatorService: rpnService)
         
         let interactor = HomeInteractor(presenter: presenter, worker: worker)
         
