@@ -15,10 +15,7 @@ protocol HomePresenterProtocol {
 final class HomePresenter {
     
     weak var view: HomeViewProtocol?
-//    
-//    init(view: HomeViewProtocol) {
-//        self.view = view
-//    }
+
 }
 
 

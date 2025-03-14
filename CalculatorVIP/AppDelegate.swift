@@ -15,9 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        let assembly = HomeAssembly()
-        window?.rootViewController = Trash2()
-//        window?.rootViewController = assembly.creteCalcHomeViewController()
+        let homeViewController = HomeAssembly().creteCalcHomeViewController()
+        //window?.rootViewController = Trash2()
+        window?.rootViewController = homeViewController
         window?.makeKeyAndVisible()
         
         return true

@@ -77,7 +77,8 @@ final class HomeViewController: UIViewController {
     }
     
     
-    //UIFunctions
+    // MARK: - UIFunctions
+    
     private func setUpViews() {
         self.view.backgroundColor = .black
         

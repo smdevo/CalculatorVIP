@@ -159,3 +159,6 @@ extension HomeWorker: HomeWorkerProtocol {
     
 }
 
+//protocol ZeroProviderProtocol
+//
+//struct ZeroProvider: ZeroProviderProtocol
