@@ -26,8 +26,10 @@ final class HomeInteractor {
 }
 
 extension HomeInteractor: HomeInteractorProtocol {
-    
-    
+    func onViewDidLoad() {
+        presenter.setNumberPadStackView()
+    }
+        
     func processResult(label: String, labelBtn: String) {
         
         //print("Processing inside the interactor")
@@ -39,7 +41,4 @@ extension HomeInteractor: HomeInteractorProtocol {
         presenter.presentResult(result: result)
         
     }
-    
-
-    
 }

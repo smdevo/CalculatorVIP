@@ -10,6 +10,7 @@ import UIKit
 //MARK: ViewProtocol
 protocol HomeViewProtocol: AnyObject {
     func displayResult(result: String)
+    func setNumberPadStackView(from structure: [[String]])
 }
 
 //MARK: View
@@ -41,15 +42,6 @@ final class HomeViewController: UIViewController {
 
     private let numberPadStackView = StackView(spacing: .spacing(.x2))
     
-    // Properties
-    private let buttons: [[String]] = [
-        ["⌫", "(", ")", "÷"],
-        ["7", "8", "9", "×"],
-        ["4", "5", "6", "－"],
-        ["1", "2", "3", "+"],
-        ["AC", "0", ".", "="]
-    ]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,30 +61,14 @@ final class HomeViewController: UIViewController {
     // MARK: - UIFunctions
     
     private func setUpViews() {
-        self.view.backgroundColor = .black
-        
-        interactor.onViewDidLoad()
-        
-        setNumberPadStackView()
-        
+        view.backgroundColor = .black
         view.addSubview(scrollViewForLabel)
-        scrollViewForLabel.addSubview(label)
         view.addSubview(numberPadStackView)
         
+        scrollViewForLabel.addSubview(label)
         setConstraints()
-    }
-    
-    private func setNumberPadStackView() {
-        for row in buttons {
-            let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
-            
-            for label in row {
-                let button = CalculatorButton(title: label)
-                button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-                rowStackView.addArrangedSubview(button)
-            }
-            numberPadStackView.addArrangedSubview(rowStackView)
-        }
+        
+        interactor.onViewDidLoad()
     }
     
     private func setConstraints() {
@@ -149,13 +125,11 @@ final class HomeViewController: UIViewController {
         scrollViewForLabel.setContentOffset(offset, animated: false)
     }
 
-    //obj Functions
     @objc func buttonTapped(_ sender: UIButton) {
         guard
             let buttonTitle = sender.titleLabel?.text,
             let labelTitle = label.text
         else { return }
-       // print("Inside View")
         interactor.processResult(label: labelTitle, labelBtn: buttonTitle)
     }
 }
@@ -165,5 +139,18 @@ extension HomeViewController: HomeViewProtocol {
     func displayResult(result: String) {
         label.text = result
         updateLabelSize()
+    }
+    
+    func setNumberPadStackView(from structure: [[String]]) {
+        for row in structure {
+            let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
+            
+            for label in row {
+                let button = CalculatorButton(title: label)
+                button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+                rowStackView.addArrangedSubview(button)
+            }
+            numberPadStackView.addArrangedSubview(rowStackView)
+        }
     }
 }
