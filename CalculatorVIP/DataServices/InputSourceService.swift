@@ -37,7 +37,7 @@ final class InputSourceService {
                 return "("
             }
             
-            if lastElement == "," {
+            if lastElement == "." {
                 return label.withoutLastElement + "×("
             }
             
@@ -59,7 +59,7 @@ final class InputSourceService {
             }
             
             if
-                "÷×－+,".contains(lastElement) {
+                "÷×－+.".contains(lastElement) {
                 return label.withoutLastElement + ")"
             }
             
@@ -70,7 +70,7 @@ final class InputSourceService {
             
             if lastElement == "(" {return label}
             
-            if "÷×－+,".contains(lastElement) {
+            if "÷×－+.".contains(lastElement) {
                 return label.withoutLastElement + labelBtn
             }
             
@@ -79,15 +79,15 @@ final class InputSourceService {
             
             
         //6
-        case ",":
+        case ".":
             
-            if "÷×－+(".contains(lastElement) {return label + "0,"}
+            if "÷×－+(".contains(lastElement) {return label + "0."}
             
-            if lastElement == ")" {return label + "×0,"}
+            if lastElement == ")" {return label + "×0."}
             
-            if let lastNumber = gettingLastNumber(str: label), lastNumber.contains(",") {return label}
+            if let lastNumber = gettingLastNumber(str: label), lastNumber.contains(".") {return label}
             
-            return label + ","
+            return label + "."
             
             
         //7

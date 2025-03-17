@@ -11,72 +11,26 @@ class Trash2: UIViewController {
     
     
     override func viewDidLoad() {
-       let _ = convertToInfinix(str: "(5+((((5+3)")//(((((1,0+(29×(4÷8))×43)+5)×(7+4)+3))+
+       let _ = makingInfinixFromRaw(str: "((5+((((5+3)+(")//(((((1,0+(29×(4÷8))×43)+5)×(7+4)+3))+
     
     }
     
     
-    
-    func secondConvert(str: String) {
-        
-        var normalStr: String = ""
+    func makingInfinixFromRaw(str: String) -> String {
         
         
-        
-        for el in normalStr {
-            
-            
-            normalStr.append(el)
-            
-            
+        if extractingComponents(str: str).count == 1 {
+            print("First \(str)")
+            return str
         }
         
+        let cleanStr    = removingAdditionalBrackets(str: str)
+ 
+        let completeStr = addingNeededBrackets(str: cleanStr)
         
-        
-    }
-    
-    func convertToInfinix(str: String) -> String {
-        
-        var newStr = str
-        
-        if extractingComponents(str: newStr).count == 1 {
-            print("First \(newStr)")
-            return newStr
-        }
-        
-        print("First Count \(extractingComponents(str: newStr).count)")
-        print(extractingComponents(str: newStr))
-
-        
-        while !(newStr.last ?? "0").isNumber {
-            newStr = newStr.withoutLastElement
-        }
-        
-        while !(newStr.first ?? "0").isNumber {
-            newStr = newStr.withoutFirstElement
-        }
-    
-        print("Second Count \(extractingComponents(str: newStr).count)")
-        print(extractingComponents(str: newStr))
-        
-        if newStr.filter({$0 == ")"}).count > newStr.filter({$0 == "("}).count {
-            
-            let bracketsCount = newStr.filter({$0 == ")"}).count - newStr.filter({$0 == "("}).count
-            
-            let brackets = String(Array(repeating: "(", count: bracketsCount))
-            
-            newStr = brackets + newStr
-            
-        }else {
-            let bracketsCount = newStr.filter({$0 == "("}).count - newStr.filter({$0 == ")"}).count
-            
-            let brackets = String(Array(repeating: ")", count: bracketsCount))
-            
-            newStr = newStr + brackets
-        }
-            
-        print("Second \(newStr)")
-        return newStr
+       
+        print("Second \(completeStr)")
+        return completeStr
     }
     
     
@@ -86,6 +40,44 @@ class Trash2: UIViewController {
         return components.filter {!$0.isEmpty}
     }
    
+    private func removingAdditionalBrackets(str: String) -> String {
+        var newStr = str
+        
+        while "÷×－+(".contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
+            newStr = newStr.withoutLastElement
+        }
+        
+        while "÷×－+(".contains(newStr.first ?? "0") {
+            newStr = newStr.withoutFirstElement
+        }
+        
+        return newStr
+    }
+    
+    private func addingNeededBrackets(str: String) -> String {
+        
+        var newStr = str
+                
+        let openCount = newStr.filter({$0 == "("}).count
+        let closeCount = newStr.filter({$0 == ")"}).count
+        
+        let isMoreOpen = openCount > closeCount
+        
+        let difference = abs(openCount - closeCount)
+    
+        let bracketsNeeded = String(Array(repeating: isMoreOpen ? ")" : "(", count: difference))
+        
+        newStr = isMoreOpen ? newStr + bracketsNeeded : bracketsNeeded + newStr
+            
+        return newStr
+    }
 
 }
+
+
+
+
+
+
+
 
