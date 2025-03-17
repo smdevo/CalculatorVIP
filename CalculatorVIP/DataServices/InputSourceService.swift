@@ -6,15 +6,15 @@
 //
 
 import Foundation
-//
-//protocol InputSourceServiceProtocol {
-//    func addingBtnToLabel(label: String, labelBtn: String) -> String
-//}
+
+protocol InputSourceServiceProtocol {
+    func addingBtnToLabel(label: String, labelBtn: String) -> String
+}
 
 //why dont we need protocols for services
 
 
-final class InputSourceService {
+final class InputSourceService: InputSourceServiceProtocol {
     
     func addingBtnToLabel(label: String, labelBtn: String) -> String {
                 
@@ -114,7 +114,6 @@ final class InputSourceService {
     }
     
     
-    
     //private functions
     
     private func checkingForCloseTheBracket(str: String) -> Bool {
@@ -130,7 +129,6 @@ final class InputSourceService {
   //      print(cleanComps)
         return cleanComps.last
     }
-    
 }
 
 

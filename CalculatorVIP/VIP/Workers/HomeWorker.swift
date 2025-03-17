@@ -14,7 +14,6 @@ protocol HomeWorkerProtocol {
 
 
 final class HomeWorker {
-  
     let rpnCalculatorService: RPNService
     let inputSourceOfRpnService: InputSourceService
     
@@ -27,18 +26,15 @@ final class HomeWorker {
 
 
 extension HomeWorker: HomeWorkerProtocol {
-    
     func addingBtnToLabel(label: String, labelBtn: String) -> String {
-                
-        return  inputSourceOfRpnService.addingBtnToLabel(label: label, labelBtn: labelBtn)
-        
+        inputSourceOfRpnService.addingBtnToLabel(label: label, labelBtn: labelBtn)
     }
-     
+    
     func calculateTheResult(label: String) -> String {
-         
-        return rpnCalculatorService.calculate(calcLabel: label)
-     }
-    
-    
+        rpnCalculatorService.calculate(calcLabel: label)
+    }
 }
 
+// understanding
+// need to testng
+// nma ma'no

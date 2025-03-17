@@ -6,6 +6,7 @@
 //
 
 protocol HomeInteractorProtocol {
+    func onViewDidLoad()
     func processResult(label: String, labelBtn: String)
 }
 
@@ -30,7 +31,7 @@ extension HomeInteractor: HomeInteractorProtocol {
     func processResult(label: String, labelBtn: String) {
         
         //print("Processing inside the interactor")
-        
+        //need to use if
         let result = labelBtn == "=" ?
         worker.calculateTheResult(label: label) :
         worker.addingBtnToLabel(label: label, labelBtn: labelBtn)

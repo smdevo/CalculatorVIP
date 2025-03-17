@@ -12,7 +12,6 @@ protocol HomeViewProtocol: AnyObject {
     func displayResult(result: String)
 }
 
-
 //MARK: View
 final class HomeViewController: UIViewController {
 
@@ -20,8 +19,8 @@ final class HomeViewController: UIViewController {
     var interactor: HomeInteractorProtocol
     var router: HomeRouterProtocol
     
-    // UI Elements
-    
+    // MARK: - UI Elements
+    // CalculatorLabel
     private let label: UILabel = {
         let label = UILabel()
         label.text = "0"
@@ -40,15 +39,9 @@ final class HomeViewController: UIViewController {
         return scrollView
     }()
 
-    private let numberPadStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.spacing = 8
-        return stack
-    }()
+    private let numberPadStackView = StackView(spacing: .spacing(.x2))
     
-    //Properties
+    // Properties
     private let buttons: [[String]] = [
         ["⌫", "(", ")", "÷"],
         ["7", "8", "9", "×"],
@@ -57,15 +50,12 @@ final class HomeViewController: UIViewController {
         ["AC", "0", ".", "="]
     ]
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpViews()
     }
     
-    
-    //init
     init(interactor: HomeInteractorProtocol, router: HomeRouterProtocol) {
         self.interactor = interactor
         self.router = router
@@ -76,11 +66,12 @@ final class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - UIFunctions
     
     private func setUpViews() {
         self.view.backgroundColor = .black
+        
+        interactor.onViewDidLoad()
         
         setNumberPadStackView()
         
@@ -93,18 +84,10 @@ final class HomeViewController: UIViewController {
     
     private func setNumberPadStackView() {
         for row in buttons {
-            let rowStackView = UIStackView()
-            rowStackView.axis = .horizontal
-            rowStackView.distribution = .fillEqually
-            rowStackView.spacing = 8
+            let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
             
             for label in row {
-                let button = UIButton(type: .system)
-                button.setTitle(label, for: .normal)
-                button.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: .bold)
-                button.setTitleColor(.white, for: .normal)
-                button.backgroundColor = setBackgroundColorToEachButton(label: label)
-                button.layer.cornerRadius = 30
+                let button = CalculatorButton(title: label)
                 button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
                 rowStackView.addArrangedSubview(button)
             }
@@ -116,38 +99,37 @@ final class HomeViewController: UIViewController {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         scrollViewForLabel.translatesAutoresizingMaskIntoConstraints = false
-        numberPadStackView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            numberPadStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            numberPadStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            numberPadStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
-            numberPadStackView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2),
+            numberPadStackView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: .spacing(.x4)
+            ),
+            numberPadStackView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor, constant: .spacing(.x4).minusSpacing
+            ),
+            numberPadStackView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor, constant: -.spacing(.x8)
+            ),
+            numberPadStackView.heightAnchor.constraint(
+                equalToConstant: UIScreen.main.bounds.height / 2
+            ),
             
-            scrollViewForLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            scrollViewForLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scrollViewForLabel.bottomAnchor.constraint(equalTo: numberPadStackView.topAnchor, constant: -5),
-            scrollViewForLabel.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 12),
+            scrollViewForLabel.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: .spacing(.x4)
+            ),
+            scrollViewForLabel.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor, constant: .spacing(.x8).minusSpacing
+            ),
+            scrollViewForLabel.bottomAnchor.constraint(
+                equalTo: numberPadStackView.topAnchor, constant: .spacing(.x1).minusSpacing
+            ),
+            scrollViewForLabel.heightAnchor.constraint(
+                equalToConstant: UIScreen.main.bounds.height / .spacing(.x3)
+            ),
             
-            label.trailingAnchor.constraint(equalTo: scrollViewForLabel.trailingAnchor),
-            label.leadingAnchor.constraint(greaterThanOrEqualTo: scrollViewForLabel.leadingAnchor),
             label.widthAnchor.constraint(greaterThanOrEqualTo: scrollViewForLabel.widthAnchor),
             label.bottomAnchor.constraint(equalTo: scrollViewForLabel.bottomAnchor),
             label.topAnchor.constraint(equalTo: scrollViewForLabel.topAnchor)
         ])
-        
-    }
-    
-    private func setBackgroundColorToEachButton(label: String) -> UIColor {
-        var color = UIColor.darkGray
-        switch label {
-        case "AC", "(", ")","⌫":
-            color = .lightGray
-        case "÷", "×", "－","+","=":
-            color = .orange
-        default: break
-        }
-        return color
     }
     
     private func updateLabelSize() {
@@ -155,11 +137,16 @@ final class HomeViewController: UIViewController {
         let maxWidth = max(textSize.width, scrollViewForLabel.frame.width)
 
         label.frame.size.width = maxWidth
-        scrollViewForLabel.contentSize = CGSize(width: maxWidth, height: scrollViewForLabel.frame.height)
+        scrollViewForLabel.contentSize = CGSize(
+            width: maxWidth,
+            height: scrollViewForLabel.frame.height
+        )
 
         // Scroll to the rightmost part (show latest input)
-        let offsetX = max(scrollViewForLabel.contentSize.width - scrollViewForLabel.frame.width, 0)
-        scrollViewForLabel.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)
+        let offsetMax = max(scrollViewForLabel.contentSize.width - scrollViewForLabel.frame.width, 0)
+        let offset = CGPoint(x: offsetMax, y: 0)
+        
+        scrollViewForLabel.setContentOffset(offset, animated: false)
     }
 
     //obj Functions
@@ -167,21 +154,16 @@ final class HomeViewController: UIViewController {
         guard
             let buttonTitle = sender.titleLabel?.text,
             let labelTitle = label.text
-        else {return}
+        else { return }
        // print("Inside View")
         interactor.processResult(label: labelTitle, labelBtn: buttonTitle)
     }
-    
 }
-
-
 
 //MARK: ExtensionView
 extension HomeViewController: HomeViewProtocol {
-    
     func displayResult(result: String) {
         label.text = result
         updateLabelSize()
     }
-    
 }

@@ -7,8 +7,12 @@
 
 import Foundation
 
-final class RPNService {
-    
+protocol RPNServiceProtocol {
+    func calculate(calcLabel: String) -> String
+}
+
+
+final class RPNService: RPNServiceProtocol {
     
     func calculate(calcLabel: String) -> String {
         
@@ -16,18 +20,16 @@ final class RPNService {
         
         print("Infinix: \(infinix)")
         
-        let postfix = shuntingYard(infinix)
+        let postfix = infinixToPostFix(infinix)
         print("Postfix: \(postfix)")
         
         return postfix.debugDescription// + "Calculate"
         
     }
     
-    
 
-   
 
-    func shuntingYard(_ expression: String) -> [String] {
+    func infinixToPostFix(_ expression: String) -> [String] {
         
         let tokens = strToStrArray(str: expression)
         
@@ -41,7 +43,7 @@ final class RPNService {
         
         for token in tokens {
             
-            if let num = Double(token) {
+            if let _ = Double(token) {
                 output.append("\(token) ") // Son bo‘lsa chiqishga yozamiz
             } else if let _ = precedence[token] {
                 while let last = stack.last, let lastPrec = precedence[last], lastPrec >= precedence[token]! {
@@ -54,7 +56,7 @@ final class RPNService {
                 while let last = stack.last, last != "(" {
                     output.append("\(stack.popLast()!) ")
                 }
-                stack.popLast() // Ochuvchi qavsni olib tashlaymiz
+               let _ = stack.popLast() // Ochuvchi qavsni olib tashlaymiz
             }
         }
         
@@ -71,9 +73,8 @@ final class RPNService {
     }
 
     
-    
+    // it should be Provider which contains one public 2 private funcitons
     private  func makingInfinixFromRaw(str: String) -> String {
-        
         
         if extractingComponents(str: str).count == 1 {
             print("First \(str)")
@@ -90,13 +91,10 @@ final class RPNService {
     }
     
    
-    
-    
-    
-    
-    
-    
     //Helper functions
+
+    /// This function makes string ,,, `jjjjjj`
+    /// parametres: str: String
     private func removingAdditionalBrackets(str: String) -> String {
         var newStr = str
         
