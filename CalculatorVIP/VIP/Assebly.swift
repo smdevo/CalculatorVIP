@@ -17,12 +17,14 @@ final class HomeAssembly: HomeAssemblyProtocol {
      func creteCalcHomeViewController() -> HomeViewController {
         
         let rpnService = RPNService()
+         
+        let inputSourceOfRPnService = InputSourceService()
     
         let presenter = HomePresenter()
         
         let router = HomeRouter()
         
-        let worker = HomeWorker(rpnCalculatorService: rpnService)
+        let worker = HomeWorker(rpnCalculatorService: rpnService, inputSourceOfRpnService: inputSourceOfRPnService)
         
         let interactor = HomeInteractor(presenter: presenter, worker: worker)
         

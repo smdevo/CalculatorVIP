@@ -168,7 +168,7 @@ final class HomeViewController: UIViewController {
             let buttonTitle = sender.titleLabel?.text,
             let labelTitle = label.text
         else {return}
-        print("Inside View")
+       // print("Inside View")
         interactor.processResult(label: labelTitle, labelBtn: buttonTitle)
     }
     

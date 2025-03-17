@@ -29,12 +29,11 @@ extension HomeInteractor: HomeInteractorProtocol {
     
     func processResult(label: String, labelBtn: String) {
         
-        print("Processing inside the interactor")
+        //print("Processing inside the interactor")
         
         let result = labelBtn == "=" ?
         worker.calculateTheResult(label: label) :
         worker.addingBtnToLabel(label: label, labelBtn: labelBtn)
-    
         
         presenter.presentResult(result: result)
         

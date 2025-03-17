@@ -7,24 +7,29 @@
 
 import Foundation
 
-protocol RPNServiceProtocol {
-    
-    func convertingTheLabelIntoRpnForm(_ rawlabel: String) -> String
-    
-    func calculate(_ rpnLabel: String) -> String
-}
+//protocol RPNServiceProtocol {
+//    
+//    func convertingTheLabelIntoRpnForm(_ rawlabel: String) -> String
+//    
+//    func calculate(_ rpnLabel: String) -> String
+//}
 
-final class RPNService: RPNServiceProtocol {
+final class RPNService {
     
-    func convertingTheLabelIntoRpnForm(_ rawlabel: String) -> String {
+    
+    func calculate(calcLabel: String) -> String {
+        
+        let postfixLabel =  convertingTheLabelIntoRpnForm(rawlabel: calcLabel)
+        
+        
+        
+        return postfixLabel + "Calculate"
+    }
+    
+    
+    
+    private func convertingTheLabelIntoRpnForm(rawlabel: String) -> String {
         return "Convert"
     }
-    
-    func calculate(_ rpnLabel: String) -> String {
-        return "Calculate"
-    }
-    
-    
-    
-    
+
 }

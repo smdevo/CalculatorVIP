@@ -23,7 +23,7 @@ extension HomePresenter: HomePresenterProtocol {
     
     func presentResult(result: String) {
         
-        print("Saying the view to present Result")
+       // print("Saying the view to present Result")
         
         view?.displayResult(result: result)
     }

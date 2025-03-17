@@ -16,8 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         let homeViewController = HomeAssembly().creteCalcHomeViewController()
-        //window?.rootViewController = Trash2()
-        window?.rootViewController = homeViewController
+        window?.rootViewController = Trash2()
+        //window?.rootViewController = homeViewController
         window?.makeKeyAndVisible()
         
         return true
