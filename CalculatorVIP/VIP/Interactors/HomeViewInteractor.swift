@@ -5,9 +5,15 @@
 //  Created by Samandar on 12/03/25.
 //
 
+enum CalculatorOrientation {
+    case landscale
+    case portrait
+}
+
 protocol HomeInteractorProtocol {
     func onViewDidLoad()
     func processResult(label: String, labelBtn: String)
+    func didChangedOrientation(to orientation: CalculatorOrientation)
 }
 
 final class HomeInteractor {
@@ -40,5 +46,9 @@ extension HomeInteractor: HomeInteractorProtocol {
         
         presenter.presentResult(result: result)
         
+    }
+    
+    func didChangedOrientation(to orientation: CalculatorOrientation) {
+        presenter.changeCalculatorPosition(to: orientation)
     }
 }

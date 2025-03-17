@@ -26,6 +26,10 @@ final class StackView: UIStackView {
         views.forEach { addArrangedSubview($0) }
     }
     
+    func removeAllArrangedSubviews() {
+        arrangedSubviews.forEach { $0.removeFromSuperview() }
+    }
+    
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -5,12 +5,15 @@
 //  Created by Samandar on 12/03/25.
 //
 
+//orientation
+//Provider in RPNService
+
 import UIKit
 
 //MARK: ViewProtocol
 protocol HomeViewProtocol: AnyObject {
     func displayResult(result: String)
-    func setNumberPadStackView(from structure: [[String]])
+    func setNumberPadStackView(from structure: [[String]], isRemoveAllEmentsFromStack: Bool)
 }
 
 //MARK: View
@@ -46,6 +49,15 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         setUpViews()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if UIDevice.current.orientation.isLandscape {
+            interactor.didChangedOrientation(to: .landscale)
+        } else {
+            interactor.didChangedOrientation(to: .portrait)
+        }
     }
     
     init(interactor: HomeInteractorProtocol, router: HomeRouterProtocol) {
@@ -86,7 +98,7 @@ final class HomeViewController: UIViewController {
                 equalTo: view.bottomAnchor, constant: -.spacing(.x8)
             ),
             numberPadStackView.heightAnchor.constraint(
-                equalToConstant: UIScreen.main.bounds.height / 2
+                equalToConstant: UIDevice.current.orientation.isLandscape ? 80 : UIScreen.main.bounds.height / 2
             ),
             
             scrollViewForLabel.leadingAnchor.constraint(
@@ -141,7 +153,10 @@ extension HomeViewController: HomeViewProtocol {
         updateLabelSize()
     }
     
-    func setNumberPadStackView(from structure: [[String]]) {
+    func setNumberPadStackView(from structure: [[String]], isRemoveAllEmentsFromStack: Bool) {
+        if isRemoveAllEmentsFromStack {
+            numberPadStackView.removeAllArrangedSubviews()
+        }
         for row in structure {
             let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
             
