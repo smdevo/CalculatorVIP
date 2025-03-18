@@ -21,6 +21,11 @@ final class RPNService: RPNServiceProtocol {
     
     func calculate(calcLabel: String) -> String {
         
+        if extractingComponents(str: calcLabel).count == 1 {
+            print("First \(calcLabel)")
+            return calcLabel
+        }
+
         let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
         
         print("Infinix: \(infinix)")
@@ -28,16 +33,13 @@ final class RPNService: RPNServiceProtocol {
         let postfix = infinixToPostFix(infinix)
         print("Postfix: \(postfix)")
         
-        let calculatedResult = calculateRPN(postFix: postfix)
+        guard let calculatedResult = calculateRPN(postFix: postfix) else {
+            return "Undefined"
+        }
         print("Result: \(calculatedResult)")
         
-        var intResult: Int?
         
-        if abs(calculatedResult) - Float(Int(abs(calculatedResult))) == 0 {
-            intResult = Int(calculatedResult)
-        }
-        
-        return intResult != nil ? String(intResult ?? 0) : String(calculatedResult)
+        return calculatedResult.stringForm
         
     }
     
@@ -87,9 +89,9 @@ final class RPNService: RPNServiceProtocol {
     }
     
     
-    func calculateRPN(postFix: [String]) -> Float {
+    func calculateRPN(postFix: [String]) -> Float? {
         
-        var customStack = CustomStack()
+        var customStack = CustomStack<Float>()
         
         for eachElement in postFix {
             
@@ -104,7 +106,9 @@ final class RPNService: RPNServiceProtocol {
                 else {
                     continue
                 }
-                let newElement = calc(o: beforelastElement, t: lastElemen, e: eachElement)
+                guard let newElement = calc(o: beforelastElement, t: lastElemen, e: eachElement) else {
+                    return nil
+                }
                 customStack.push(element: newElement)
             }
             
@@ -113,49 +117,25 @@ final class RPNService: RPNServiceProtocol {
         return customStack.result
     }
     
-    func calc(o: Float, t: Float,e: String) -> Float {
+    func calc(o: Float, t: Float,e: String) -> Float? {
         switch e {
-        case "÷": return o / t
+        case "÷":
+            if t == 0 {
+                return nil
+            }
+            return o / t
         case "×": return o * t
         case "－": return o - t
         case "+": return o + t
         default: return 0
         }
     }
-}
-
-//LIFO
-/*
- 1. Function Call Management
- When a function is called, its local variables, parameters, and return address are stored in the call stack.
- When the function completes, its data is removed from the stack.
- This allows for nested function calls and recursion to work properly.
- 
- 2. Efficient Memory Allocation
- The stack operates in a Last In, First Out (LIFO) manner, meaning the most recently added data is removed first.
- Memory allocation and deallocation on the stack are fast because they follow a simple push/pop operation.
- 
- */
-struct CustomStack {
     
-   // let postFixElements: [String]
-    
-   private var elements: [Float] = []
-    
-    
-    mutating func push(element: Float) {
-        elements.append(element)
-    }
-    
-    mutating func pop() -> Float? {
-        guard !elements.isEmpty else {return nil}
-        return elements.removeLast()
-    }
-    
-    var result: Float {
-        return elements.last ?? 0
+    private func extractingComponents(str: String) -> [String] {
+        let operators = CharacterSet(charactersIn: "÷×－+")
+        let components = str.components(separatedBy: operators)
+        return components.filter {!$0.isEmpty}
     }
     
 }
-
 

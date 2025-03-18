@@ -16,17 +16,8 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
     func makingInfinixFromRaw(rawValue: String) -> String {
         
         print("Raw Value \(rawValue)")
-        
-        if extractingComponents(str: rawValue).count == 1 {
-            print("First \(rawValue)")
-            return rawValue
-        }
-        
-        let cleanStr    = removingAdditionalBrackets(str: rawValue)
- 
+        let cleanStr    = cleanEnd(str: rawValue)
         let completeStr = addingNeededBrackets(str: cleanStr)
-        
-        
         print("Complete \(completeStr)")
         return completeStr
     }
@@ -34,40 +25,20 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
     
     //Helper functions
 
-    private func removingAdditionalBrackets(str: String) -> String {
+    private func cleanEnd(str: String) -> String {
         var newStr = str
-        
         while "÷×－+(.".contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
             newStr = newStr.withoutLastElement
         }
-        
         return newStr.isEmpty ? "0" : newStr
     }
     
     private func addingNeededBrackets(str: String) -> String {
-        
-        var newStr = str
-                
-        let openCount = newStr.filter({$0 == "("}).count
-        let closeCount = newStr.filter({$0 == ")"}).count
-        
-        let isMoreOpen = openCount > closeCount
-        
-        let difference = abs(openCount - closeCount)
-    
-        let bracketsNeeded = String(Array(repeating: isMoreOpen ? ")" : "(", count: difference))
-        
-        newStr = isMoreOpen ? newStr + bracketsNeeded : bracketsNeeded + newStr
-            
-        return newStr
+        let differenceCount = str.filter({$0 == "("}).count - str.filter({$0 == ")"}).count
+        let bracketsNeeded = String(Array(repeating: ")", count: differenceCount))
+        return str + bracketsNeeded
     }
-    
-    private func extractingComponents(str: String) -> [String] {
-        let operators = CharacterSet(charactersIn: "÷×－+")
-        let components = str.components(separatedBy: operators)
-        return components.filter {!$0.isEmpty}
-    }
-    
-    
 }
+
+
 
