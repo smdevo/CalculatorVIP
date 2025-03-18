@@ -15,6 +15,8 @@
  
  8.8 - 5
  
+ setting constraint extention
+ 
  after = need to change if number pressed
  
  need to fix orientation
