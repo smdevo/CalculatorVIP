@@ -54,8 +54,10 @@ final class HomeViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         if UIDevice.current.orientation.isLandscape {
+            print("Landscape")
             interactor.didChangedOrientation(to: .landscale)
         } else {
+            print("Portrait")
             interactor.didChangedOrientation(to: .portrait)
         }
     }

@@ -14,9 +14,14 @@ protocol RPNServiceProtocol {
 
 final class RPNService: RPNServiceProtocol {
     
+    
+    let infinixUseCase = FromRawValueToInfinixUseCase()
+    
+    
+    
     func calculate(calcLabel: String) -> String {
         
-        let infinix = makingInfinixFromRaw(str: calcLabel)
+        let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
         
         print("Infinix: \(infinix)")
         
@@ -31,12 +36,11 @@ final class RPNService: RPNServiceProtocol {
 
     func infinixToPostFix(_ expression: String) -> [String] {
         
-        let tokens = strToStrArray(str: expression)
+        let tokens = expression.strToElementsOfArray
         
         print("Tokens \(tokens)")
         
-        //let tokens = expression.components(separatedBy: "+－").filter { !$0.isEmpty }
-        //print(tokens)
+        
        // let precedence: [Character: Int] = ["+": 1, "-": 1, "*": 2, "/": 2]
         let precedence: [String: Int] = ["+": 1, "－": 1, "×": 2, "÷": 2]
         var output: [String] = [], stack: [String] = []
@@ -71,89 +75,76 @@ final class RPNService: RPNServiceProtocol {
         
         return output
     }
-
     
-    // it should be Provider which contains one public 2 private funcitons
-    private  func makingInfinixFromRaw(str: String) -> String {
-        
-        if extractingComponents(str: str).count == 1 {
-            print("First \(str)")
-            return str
-        }
-        
-        let cleanStr    = removingAdditionalBrackets(str: str)
- 
-        let completeStr = addingNeededBrackets(str: cleanStr)
-        
-       
-        print("Second \(completeStr)")
-        return completeStr
-    }
     
-   
-    //Helper functions
-
-    /// This function makes string ,,, `jjjjjj`
-    /// parametres: str: String
-    private func removingAdditionalBrackets(str: String) -> String {
-        var newStr = str
+    func calculateRPN(postFix: [String]) -> Double {
         
-        while "÷×－+(.".contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
-            newStr = newStr.withoutLastElement
-        }
+        var customStack = CustomStack()
         
-        while "÷×－+(".contains(newStr.first ?? "0") {
-            newStr = newStr.withoutFirstElement
-        }
-        
-        return newStr.isEmpty ? "0" : newStr
-    }
-    
-    private func addingNeededBrackets(str: String) -> String {
-        
-        var newStr = str
-                
-        let openCount = newStr.filter({$0 == "("}).count
-        let closeCount = newStr.filter({$0 == ")"}).count
-        
-        let isMoreOpen = openCount > closeCount
-        
-        let difference = abs(openCount - closeCount)
-    
-        let bracketsNeeded = String(Array(repeating: isMoreOpen ? ")" : "(", count: difference))
-        
-        newStr = isMoreOpen ? newStr + bracketsNeeded : bracketsNeeded + newStr
+        for eachElement in postFix {
             
-        return newStr
-    }
-    
-    private func extractingComponents(str: String) -> [String] {
-        let operators = CharacterSet(charactersIn: "÷×－+()")
-        let components = str.components(separatedBy: operators)
-        return components.filter {!$0.isEmpty}
-    }
-    
-    private func strToStrArray(str: String) -> [String] {
-        
-        var strArr: [String] = []
-        
-        var num = ""
-        
-        for e in str {
-            if e.isNumber || e == "." {
-                num.append(e)
-            }else if "÷×－+)".contains(e) {
-                strArr.append(num)
-                strArr.append(String(e))
-                num = ""
-            }else {
-                strArr.append(String(e))
+            if let number = Double(eachElement) {
+                customStack.push(element: number)
+                print("First \(number)")
             }
+            
+            if "÷×－+".contains(eachElement) {
+                guard
+                    let lastElemen = customStack.pop(),
+                    let beforelastElement = customStack.pop()
+                else {
+                    continue
+                }
+                let newElement = lastElemen
+                return 0
         }
         
-        strArr.append(num)
-        
-        return strArr.filter({!$0.isEmpty})
+        return 0
+    }
+        return 0
+}
+    
+//    func calc(o: Double, t: Double,e: String) {
+//        switch e {
+//        case "÷":
+//        case "×":
+//        case "－":
+//        case "+":
+//        default:
+//        }
     }
 
+
+//LIFO
+/*
+ 1. Function Call Management
+ When a function is called, its local variables, parameters, and return address are stored in the call stack.
+ When the function completes, its data is removed from the stack.
+ This allows for nested function calls and recursion to work properly.
+ 
+ 2. Efficient Memory Allocation
+ The stack operates in a Last In, First Out (LIFO) manner, meaning the most recently added data is removed first.
+ Memory allocation and deallocation on the stack are fast because they follow a simple push/pop operation.
+ 
+ */
+struct CustomStack {
+    
+   // let postFixElements: [String]
+    
+    var elements: [Double] = []
+    
+    
+    mutating func push(element: Double) {
+        elements.append(element)
+    }
+    
+    mutating func pop() -> Double? {
+        guard !elements.isEmpty else {return nil}
+        return elements.removeLast()
+    }
+    
+    
+    
 }
+
+

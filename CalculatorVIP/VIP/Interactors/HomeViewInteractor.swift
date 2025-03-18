@@ -32,6 +32,7 @@ final class HomeInteractor {
 }
 
 extension HomeInteractor: HomeInteractorProtocol {
+    
     func onViewDidLoad() {
         presenter.setNumberPadStackView()
     }

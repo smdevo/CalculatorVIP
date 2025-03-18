@@ -13,7 +13,7 @@ protocol HomePresenterProtocol {
 }
 
 final class HomePresenter {
-    var portaintStructure: [[String]] = [
+    var portaitStructure: [[String]] = [
         ["⌫", "(", ")", "÷"],
         ["7", "8", "9", "×"],
         ["4", "5", "6", "－"],
@@ -42,11 +42,11 @@ extension HomePresenter: HomePresenterProtocol {
     }
     
     func setNumberPadStackView() {
-        view?.setNumberPadStackView(from: portaintStructure, isRemoveAllEmentsFromStack: false)
+        view?.setNumberPadStackView(from: portaitStructure, isRemoveAllEmentsFromStack: false)
     }
     
     func changeCalculatorPosition(to orientation: CalculatorOrientation) {
-        let structure = orientation == .landscale ? lanscapeStructure : portaintStructure
+        let structure = orientation == .landscale ? lanscapeStructure : portaitStructure
         switch orientation {
         case .landscale:
             view?.setNumberPadStackView(from: structure, isRemoveAllEmentsFromStack: true)
