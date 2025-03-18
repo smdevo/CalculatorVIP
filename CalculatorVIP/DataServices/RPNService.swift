@@ -15,7 +15,7 @@ protocol RPNServiceProtocol {
 final class RPNService: RPNServiceProtocol {
     
     
-    let infinixUseCase = FromRawValueToInfinixUseCase()
+   private let infinixUseCase = FromRawValueToInfinixUseCase()
     
     
     
@@ -28,12 +28,21 @@ final class RPNService: RPNServiceProtocol {
         let postfix = infinixToPostFix(infinix)
         print("Postfix: \(postfix)")
         
-        return postfix.debugDescription// + "Calculate"
+        let calculatedResult = calculateRPN(postFix: postfix)
+        print("Result: \(calculatedResult)")
+        
+        var intResult: Int?
+        
+        if abs(calculatedResult) - Float(Int(abs(calculatedResult))) == 0 {
+            intResult = Int(calculatedResult)
+        }
+        
+        return intResult != nil ? String(intResult ?? 0) : String(calculatedResult)
         
     }
     
-
-
+    
+    
     func infinixToPostFix(_ expression: String) -> [String] {
         
         let tokens = expression.strToElementsOfArray
@@ -41,7 +50,7 @@ final class RPNService: RPNServiceProtocol {
         print("Tokens \(tokens)")
         
         
-       // let precedence: [Character: Int] = ["+": 1, "-": 1, "*": 2, "/": 2]
+        // let precedence: [Character: Int] = ["+": 1, "-": 1, "*": 2, "/": 2]
         let precedence: [String: Int] = ["+": 1, "－": 1, "×": 2, "÷": 2]
         var output: [String] = [], stack: [String] = []
         
@@ -60,7 +69,7 @@ final class RPNService: RPNServiceProtocol {
                 while let last = stack.last, last != "(" {
                     output.append("\(stack.popLast()!) ")
                 }
-               let _ = stack.popLast() // Ochuvchi qavsni olib tashlaymiz
+                let _ = stack.popLast() // Ochuvchi qavsni olib tashlaymiz
             }
         }
         
@@ -69,23 +78,23 @@ final class RPNService: RPNServiceProtocol {
         }
         
         
-       // let res = output.trimmingCharacters(in: .whitespaces)
+        // let res = output.trimmingCharacters(in: .whitespaces)
         
-        print(output)
+        print("Output \(output)")
         
-        return output
+        
+        return output.map({$0.filter({$0 != " "})})
     }
     
     
-    func calculateRPN(postFix: [String]) -> Double {
+    func calculateRPN(postFix: [String]) -> Float {
         
         var customStack = CustomStack()
         
         for eachElement in postFix {
             
-            if let number = Double(eachElement) {
+            if let number = Float(eachElement) {
                 customStack.push(element: number)
-                print("First \(number)")
             }
             
             if "÷×－+".contains(eachElement) {
@@ -95,25 +104,25 @@ final class RPNService: RPNServiceProtocol {
                 else {
                     continue
                 }
-                let newElement = lastElemen
-                return 0
+                let newElement = calc(o: beforelastElement, t: lastElemen, e: eachElement)
+                customStack.push(element: newElement)
+            }
+            
         }
         
-        return 0
+        return customStack.result
     }
-        return 0
-}
     
-//    func calc(o: Double, t: Double,e: String) {
-//        switch e {
-//        case "÷":
-//        case "×":
-//        case "－":
-//        case "+":
-//        default:
-//        }
+    func calc(o: Float, t: Float,e: String) -> Float {
+        switch e {
+        case "÷": return o / t
+        case "×": return o * t
+        case "－": return o - t
+        case "+": return o + t
+        default: return 0
+        }
     }
-
+}
 
 //LIFO
 /*
@@ -131,19 +140,21 @@ struct CustomStack {
     
    // let postFixElements: [String]
     
-    var elements: [Double] = []
+   private var elements: [Float] = []
     
     
-    mutating func push(element: Double) {
+    mutating func push(element: Float) {
         elements.append(element)
     }
     
-    mutating func pop() -> Double? {
+    mutating func pop() -> Float? {
         guard !elements.isEmpty else {return nil}
         return elements.removeLast()
     }
     
-    
+    var result: Float {
+        return elements.last ?? 0
+    }
     
 }
 

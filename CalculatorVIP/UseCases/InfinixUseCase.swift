@@ -15,6 +15,8 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
     
     func makingInfinixFromRaw(rawValue: String) -> String {
         
+        print("Raw Value \(rawValue)")
+        
         if extractingComponents(str: rawValue).count == 1 {
             print("First \(rawValue)")
             return rawValue
@@ -24,8 +26,8 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
  
         let completeStr = addingNeededBrackets(str: cleanStr)
         
-       
-        print("Second \(completeStr)")
+        
+        print("Complete \(completeStr)")
         return completeStr
     }
     
@@ -37,10 +39,6 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
         
         while "÷×－+(.".contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
             newStr = newStr.withoutLastElement
-        }
-        
-        while "÷×－+(".contains(newStr.first ?? "0") {
-            newStr = newStr.withoutFirstElement
         }
         
         return newStr.isEmpty ? "0" : newStr
@@ -65,7 +63,7 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
     }
     
     private func extractingComponents(str: String) -> [String] {
-        let operators = CharacterSet(charactersIn: "÷×－+()")
+        let operators = CharacterSet(charactersIn: "÷×－+")
         let components = str.components(separatedBy: operators)
         return components.filter {!$0.isEmpty}
     }

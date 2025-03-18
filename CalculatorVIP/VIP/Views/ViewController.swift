@@ -39,7 +39,7 @@ final class HomeViewController: UIViewController {
     private let scrollViewForLabel: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.alwaysBounceHorizontal = true
+        scrollView.alwaysBounceHorizontal = false
         return scrollView
     }()
 
