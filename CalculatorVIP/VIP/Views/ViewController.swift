@@ -79,6 +79,8 @@ final class HomeViewController: UIViewController {
         view.addSubview(scrollViewForLabel)
         view.addSubview(numberPadStackView)
         
+      //  numberPadStackView.backgroundColor = .red
+        
         scrollViewForLabel.addSubview(label)
         setConstraints()
         
@@ -91,23 +93,26 @@ final class HomeViewController: UIViewController {
         scrollViewForLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             numberPadStackView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor, constant: .spacing(.x4)
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: .spacing(.x4)
             ),
             numberPadStackView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor, constant: .spacing(.x4).minusSpacing
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: .spacing(.x4).minusSpacing
             ),
             numberPadStackView.bottomAnchor.constraint(
-                equalTo: view.bottomAnchor, constant: -.spacing(.x8)
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -.spacing(.x8)
             ),
+//            numberPadStackView.heightAnchor.constraint(
+//                equalToConstant: UIDevice.current.orientation.isLandscape ? UIScreen.main.bounds.height / 2 : UIScreen.main.bounds.height / 2
+//            ),
             numberPadStackView.heightAnchor.constraint(
-                equalToConstant: UIDevice.current.orientation.isLandscape ? 80 : UIScreen.main.bounds.height / 2
+                equalToConstant: UIScreen.main.bounds.height / 2
             ),
             
             scrollViewForLabel.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor, constant: .spacing(.x4)
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: .spacing(.x4)
             ),
             scrollViewForLabel.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor, constant: .spacing(.x8).minusSpacing
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: .spacing(.x8).minusSpacing
             ),
             scrollViewForLabel.bottomAnchor.constraint(
                 equalTo: numberPadStackView.topAnchor, constant: .spacing(.x1).minusSpacing
@@ -116,9 +121,12 @@ final class HomeViewController: UIViewController {
                 equalToConstant: UIScreen.main.bounds.height / .spacing(.x3)
             ),
             
+//            label.leadingAnchor.constraint(equalTo: scrollViewForLabel.leadingAnchor),
+//            label.trailingAnchor.constraint(equalTo: scrollViewForLabel.trailingAnchor),
             label.widthAnchor.constraint(greaterThanOrEqualTo: scrollViewForLabel.widthAnchor),
-            label.bottomAnchor.constraint(equalTo: scrollViewForLabel.bottomAnchor),
-            label.topAnchor.constraint(equalTo: scrollViewForLabel.topAnchor)
+//            label.bottomAnchor.constraint(equalTo: scrollViewForLabel.bottomAnchor),
+//            label.topAnchor.constraint(equalTo: scrollViewForLabel.topAnchor)
+            label.heightAnchor.constraint(greaterThanOrEqualTo: scrollViewForLabel.heightAnchor)
         ])
     }
     
@@ -158,6 +166,27 @@ extension HomeViewController: HomeViewProtocol {
     func setNumberPadStackView(from structure: [[String]], isRemoveAllEmentsFromStack: Bool) {
         if isRemoveAllEmentsFromStack {
             numberPadStackView.removeAllArrangedSubviews()
+            
+            for subview in scrollViewForLabel.subviews {
+                subview.removeConstraints(subview.constraints)
+            }
+            
+            NSLayoutConstraint.activate([
+                label.widthAnchor.constraint(greaterThanOrEqualTo: scrollViewForLabel.widthAnchor),
+                label.bottomAnchor.constraint(equalTo: scrollViewForLabel.bottomAnchor),
+                label.topAnchor.constraint(equalTo: scrollViewForLabel.topAnchor)
+            ])
+            
+            for subview in view.subviews {
+                subview.removeConstraints(subview.constraints)
+            }
+            
+            setConstraints()
+            
+            
+            
+            
+            
         }
         for row in structure {
             let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))

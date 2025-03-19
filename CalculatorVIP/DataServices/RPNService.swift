@@ -36,10 +36,10 @@ final class RPNService: RPNServiceProtocol {
         guard let calculatedResult = calculateRPN(postFix: postfix) else {
             return "Undefined"
         }
-        print("Result: \(calculatedResult)")
         
-        
-        return calculatedResult.stringForm
+        let roundedResult = round(calculatedResult*1e5)/1e5
+
+        return roundedResult.stringForm
         
     }
     
@@ -88,44 +88,41 @@ final class RPNService: RPNServiceProtocol {
         return output.map({$0.filter({$0 != " "})})
     }
     
-    private func calculateRPN(postFix: [String]) -> Float? {
+    private func calculateRPN(postFix: [String]) -> Double? {
         
-        var customStack = CustomStack<Float>()
+        var customStack = CustomStack<Double>()
         
         for eachElement in postFix {
             
-            if let number = Float(eachElement) {
+            if let number = Double(eachElement) {
                 customStack.push(element: number)
-            }
-            
-            if "÷×－+".contains(eachElement) {
+            }else {
                 guard
-                    let lastElemen = customStack.pop(),
-                    let beforelastElement = customStack.pop()
+                let last = customStack.pop(),
+                let bLast = customStack.pop()
                 else {
-                    continue
-                }
-                guard let newElement = calc(o: beforelastElement, t: lastElemen, e: eachElement) else {
                     return nil
                 }
-                customStack.push(element: newElement)
+                switch eachElement {
+                case "÷": customStack.push(element: bLast / last)
+                case "×": customStack.push(element: bLast * last)
+                case "－":customStack.push(element: bLast - last)
+                case "+":customStack.push(element: bLast + last)
+                default: break
+                }
             }
-            
         }
-        
         return customStack.result
     }
     
-    private func calc(o: Float, t: Float,e: String) -> Float? {
-        switch e {
-        case "÷":
-            if t == 0 {
-                return nil
-            }
-            return o / t
-        case "×": return o * t
-        case "－": return o - t
-        case "+": return o + t
+    private func math(last: Double, beforeLast: Double, oper: String) -> Double? {
+        switch oper {
+        case "÷": return beforeLast / last
+//            if last == 0 {return nil}
+//            return beforeLast / last
+        case "×": return beforeLast * last
+        case "－": return beforeLast - last
+        case "+": return beforeLast + last
         default: return 0
         }
     }

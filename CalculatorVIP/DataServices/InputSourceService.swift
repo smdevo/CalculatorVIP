@@ -95,8 +95,6 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             if label == "0" { return labelBtn }
             
-            
-            // Case 2: Prevent multiple leading zeros in a number (e.g., "0000,82")
             if
                 let lastNumber = gettingLastNumber(str: label),
                 lastNumber == "0" && !"÷×－+".contains(lastElement)

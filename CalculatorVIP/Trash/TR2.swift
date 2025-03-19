@@ -47,9 +47,6 @@ class Trash2: UIViewController {
             newStr = newStr.withoutLastElement
         }
         
-        while "÷×－+(".contains(newStr.first ?? "0") {
-            newStr = newStr.withoutFirstElement
-        }
         
         return newStr
     }

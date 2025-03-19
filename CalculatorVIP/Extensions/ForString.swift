@@ -6,37 +6,34 @@
 //
 
 extension String {
-    
     var withoutLastElement: String {
         return String(self.dropLast())
     }
     
-    var withoutFirstElement: String {
-        return String(self.dropFirst())
-    }
-    
     var strToElementsOfArray: [String] {
-        
         var strArr: [String] = []
+        var number = ""
+        let operators = "÷×－+)"
         
-        var num = ""
-        
-        for e in self {
-            if e.isNumber || e == "." {
-                num.append(e)
-            }else if "÷×－+)".contains(e) {
-                strArr.append(num)
-                strArr.append(String(e))
-                num = ""
-            }else {
-                strArr.append(String(e))
+        for char in self {
+            if char.isNumber || char == "." {
+                number.append(char)
+            } else {
+                if !number.isEmpty {
+                    strArr.append(number)
+                    number = ""
+                }
+                if operators.contains(char) || !char.isWhitespace {
+                    strArr.append(char.intoString)
+                }
             }
         }
         
-        strArr.append(num)
+        if !number.isEmpty {
+            strArr.append(number)
+        }
         
-        return strArr.filter({!$0.isEmpty})
+        return strArr
     }
-    
-    
 }
+
