@@ -16,6 +16,8 @@ enum PaymeSpaces: CGFloat {
     case x6 = 24
     case x7 = 28
     case x8 = 32
+    case x9 = 36
+    case x10 = 40
 }
 
 extension CGFloat {

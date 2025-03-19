@@ -13,7 +13,7 @@
  
  need to know why we have " " after the element in infinix_to_postfix function
  
- 8.8 - 5
+ 8.8 - 5                               -> done
  
  setting constraint extention
  
@@ -33,7 +33,7 @@
 
  Making above history
 
- Instead of if -> guard string?
+ Instead of if -> guard string?        -> done
 
  CoreData with history in tableView
  

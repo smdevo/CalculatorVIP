@@ -17,8 +17,6 @@ final class RPNService: RPNServiceProtocol {
     
    private let infinixUseCase = FromRawValueToInfinixUseCase()
     
-    
-    
     func calculateAndGiveTheResult(calcLabel: String) -> String? {
         
         if extractingComponents(str: calcLabel).count == 1 {

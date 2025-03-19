@@ -164,6 +164,8 @@ extension HomeViewController: HomeViewProtocol {
     }
     
     func setNumberPadStackView(from structure: [[String]], isRemoveAllEmentsFromStack: Bool) {
+        
+        
         if isRemoveAllEmentsFromStack {
             numberPadStackView.removeAllArrangedSubviews()
             

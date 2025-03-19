@@ -14,7 +14,7 @@ final class CalculatorButton: UIButton {
         titleLabel?.font = UIFont.systemFont(ofSize: .spacing(.x8), weight: .bold)
         setTitleColor(.white, for: .normal)
         backgroundColor = setBackgroundColorToEachButton(label: title)
-        layer.cornerRadius = .spacing(.x8)
+        layer.cornerRadius = UIDevice.current.orientation.isLandscape ? .spacing(.x6) : .spacing(.x10)
     }
     
     private func setBackgroundColorToEachButton(label: String) -> UIColor {
