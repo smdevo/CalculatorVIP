@@ -8,7 +8,7 @@
 import Foundation
 
 protocol InputSourceServiceProtocol {
-    func addingBtnToLabel(label: String, labelBtn: String) -> String
+    func addingBtnToLabel(label: String, labelBtn: String) -> String?
 }
 
 //why dont we need protocols for services
@@ -16,15 +16,15 @@ protocol InputSourceServiceProtocol {
 
 final class InputSourceService: InputSourceServiceProtocol {
     
-    func addingBtnToLabel(label: String, labelBtn: String) -> String {
+    func addingBtnToLabel(label: String, labelBtn: String) -> String? {
                 
-        guard let lastElement = label.last else {return label}
+        guard let lastElement = label.last else {return nil}
         
         switch labelBtn {
             
       //1
         case "AC":
-            return "0"
+            return labelBtn != "0" ? "0" : nil
             
             
       //2
@@ -51,11 +51,11 @@ final class InputSourceService: InputSourceServiceProtocol {
         case ")":
             
             if !checkingForCloseTheBracket(str: label) {
-                return label
+                return nil
             }
             
             if lastElement == "(" {
-                return label
+                return nil
             }
             
             if
@@ -68,7 +68,7 @@ final class InputSourceService: InputSourceServiceProtocol {
         //5
         case "÷", "×", "－", "+":
             
-            if lastElement == "(" {return label}
+            if lastElement == "(" {return nil}
             
             if "÷×－+.".contains(lastElement) {
                 return label.withoutLastElement + labelBtn
@@ -85,7 +85,7 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             if lastElement == ")" {return label + "×0."}
             
-            if let lastNumber = gettingLastNumber(str: label), lastNumber.contains(".") {return label}
+            if let lastNumber = gettingLastNumber(str: label), lastNumber.contains(".") {return nil}
             
             return label + "."
             

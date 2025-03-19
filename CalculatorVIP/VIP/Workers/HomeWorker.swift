@@ -8,8 +8,8 @@ import Foundation
 
 
 protocol HomeWorkerProtocol {
-    func addingBtnToLabel(label: String, labelBtn: String) -> String
-    func calculateTheResult(label: String) -> String
+    func addingBtnToLabel(label: String, labelBtn: String) -> String?
+    func calculateTheResult(label: String) -> String?
 }
 
 
@@ -26,12 +26,12 @@ final class HomeWorker {
 
 
 extension HomeWorker: HomeWorkerProtocol {
-    func addingBtnToLabel(label: String, labelBtn: String) -> String {
+    func addingBtnToLabel(label: String, labelBtn: String) -> String? {
         inputSourceOfRpnService.addingBtnToLabel(label: label, labelBtn: labelBtn)
     }
     
-    func calculateTheResult(label: String) -> String {
-        rpnCalculatorService.calculate(calcLabel: label)
+    func calculateTheResult(label: String) -> String? {
+        rpnCalculatorService.calculateAndGiveTheResult(calcLabel: label)
     }
 }
 

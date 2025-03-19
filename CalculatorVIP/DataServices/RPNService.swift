@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RPNServiceProtocol {
-    func calculate(calcLabel: String) -> String
+    func calculateAndGiveTheResult(calcLabel: String) -> String?
 }
 
 
@@ -19,11 +19,11 @@ final class RPNService: RPNServiceProtocol {
     
     
     
-    func calculate(calcLabel: String) -> String {
+    func calculateAndGiveTheResult(calcLabel: String) -> String? {
         
         if extractingComponents(str: calcLabel).count == 1 {
             print("First \(calcLabel)")
-            return calcLabel
+            return nil
         }
 
         let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
@@ -45,7 +45,7 @@ final class RPNService: RPNServiceProtocol {
     
     
     
-    func infinixToPostFix(_ expression: String) -> [String] {
+    private func infinixToPostFix(_ expression: String) -> [String] {
         
         let tokens = expression.strToElementsOfArray
         
@@ -88,8 +88,7 @@ final class RPNService: RPNServiceProtocol {
         return output.map({$0.filter({$0 != " "})})
     }
     
-    
-    func calculateRPN(postFix: [String]) -> Float? {
+    private func calculateRPN(postFix: [String]) -> Float? {
         
         var customStack = CustomStack<Float>()
         
@@ -117,7 +116,7 @@ final class RPNService: RPNServiceProtocol {
         return customStack.result
     }
     
-    func calc(o: Float, t: Float,e: String) -> Float? {
+    private func calc(o: Float, t: Float,e: String) -> Float? {
         switch e {
         case "÷":
             if t == 0 {

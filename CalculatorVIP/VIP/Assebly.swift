@@ -37,6 +37,7 @@
 
  CoreData with history in tableView
  
+ V ekrane toje rpn vidno c skobkoy and postfix form
  
  */
 

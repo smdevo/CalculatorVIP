@@ -40,12 +40,18 @@ extension HomeInteractor: HomeInteractorProtocol {
     func processResult(label: String, labelBtn: String) {
         
         //print("Processing inside the interactor")
-        //need to use if
-        let result = labelBtn == "=" ?
-        worker.calculateTheResult(label: label) :
-        worker.addingBtnToLabel(label: label, labelBtn: labelBtn)
         
-        presenter.presentResult(result: result)
+        var resultLabel: String?
+        
+        if labelBtn == "=" {
+            resultLabel = worker.calculateTheResult(label: label)
+        }else {
+            resultLabel = worker.addingBtnToLabel(label: label, labelBtn: labelBtn)
+        }
+          
+        guard let resultLabel else {return}
+        
+        presenter.presentResult(result: resultLabel)
         
     }
     
