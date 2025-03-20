@@ -31,6 +31,10 @@ struct CustomStack<T> {
     }
     
     mutating func pop() -> T? {
+        
+        if elements.isEmpty {
+            return nil
+        }
         return elements.removeLast()
     }
     

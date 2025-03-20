@@ -94,6 +94,7 @@ final class RPNService: RPNServiceProtocol {
                 let last = customStack.pop(),
                 let bLast = customStack.pop()
                 else {
+                    print("Craaash")
                     return nil
                 }
                 switch eachElement {
