@@ -50,7 +50,8 @@ final class RPNService: RPNServiceProtocol {
         print("Tokens \(tokens)")
         
         
-        let precedence: [String: Int] = ["+": 1, "－": 1, "×": 2, "÷": 2]
+        let precedence: [String: Int] =
+        [CButton.add.r: 1, CButton.minus.r: 1, CButton.multiply.r: 2, CButton.divide.r: 2]
         var output: [String] = [], stack: [String] = []
         
         for token in tokens {
@@ -96,10 +97,10 @@ final class RPNService: RPNServiceProtocol {
                     return nil
                 }
                 switch eachElement {
-                case "÷": customStack.push(element: bLast / last)
-                case "×": customStack.push(element: bLast * last)
-                case "－":customStack.push(element: bLast - last)
-                case "+":customStack.push(element: bLast + last)
+                case CButton.divide.r:   customStack.push(element: bLast / last)
+                case CButton.multiply.r: customStack.push(element: bLast * last)
+                case CButton.minus.r:    customStack.push(element: bLast - last)
+                case CButton.add.r:      customStack.push(element: bLast + last)
                 default: break
                 }
             }
@@ -107,20 +108,8 @@ final class RPNService: RPNServiceProtocol {
         return customStack.result
     }
     
-    private func math(last: Double, beforeLast: Double, oper: String) -> Double? {
-        switch oper {
-        case "÷": return beforeLast / last
-//            if last == 0 {return nil}
-//            return beforeLast / last
-        case "×": return beforeLast * last
-        case "－": return beforeLast - last
-        case "+": return beforeLast + last
-        default: return 0
-        }
-    }
-    
     private func extractingComponents(str: String) -> [String] {
-        let operators = CharacterSet(charactersIn: "÷×－+")
+        let operators = CharacterSet(charactersIn: Op.only.r)
         let components = str.components(separatedBy: operators)
         return components.filter {!$0.isEmpty}
     }

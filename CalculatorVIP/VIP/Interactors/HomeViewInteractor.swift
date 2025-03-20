@@ -9,7 +9,7 @@
 
 protocol HomeInteractorProtocol {
     func onViewDidLoad()
-    func processResult(label: String, labelBtn: String)
+    func processResult(label: String, labelBtn: CButton)
     func didChangedOrientation(to orientation: CalculatorOrientation)
 }
 
@@ -34,13 +34,13 @@ extension HomeInteractor: HomeInteractorProtocol {
         presenter.setNumberPadStackView()
     }
         
-    func processResult(label: String, labelBtn: String) {
+    func processResult(label: String, labelBtn: CButton) {
         
         //print("Processing inside the interactor")
         
         var resultLabel: String?
         
-        if labelBtn == "=" {
+        if labelBtn == .equal {
             resultLabel = worker.calculateTheResult(label: label)
         }else {
             resultLabel = worker.addingBtnToLabel(label: label, labelBtn: labelBtn)

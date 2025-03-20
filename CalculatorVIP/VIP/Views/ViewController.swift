@@ -13,7 +13,7 @@ import UIKit
 //MARK: ViewProtocol
 protocol HomeViewProtocol: AnyObject {
     func displayResult(result: String)
-    func setNumberPadStackView(from structure: [[String]], isRemoveAllEmentsFromStack: Bool)
+    func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool)
 }
 
 //MARK: View
@@ -123,9 +123,13 @@ final class HomeViewController: UIViewController {
     @objc func buttonTapped(_ sender: UIButton) {
         guard
             let buttonTitle = sender.titleLabel?.text,
+            let btn = CButton(rawValue: buttonTitle),
             let labelTitle = label.text
         else { return }
-        interactor.processResult(label: labelTitle, labelBtn: buttonTitle)
+        
+        
+        
+        interactor.processResult(label: labelTitle, labelBtn: btn)
     }
 }
 
@@ -137,7 +141,7 @@ extension HomeViewController: HomeViewProtocol {
         updateLabelSize()
     }
     
-    func setNumberPadStackView(from structure: [[String]], isRemoveAllEmentsFromStack: Bool) {
+    func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool) {
         
         if isRemoveAllEmentsFromStack {
             resetView()
@@ -146,7 +150,7 @@ extension HomeViewController: HomeViewProtocol {
             let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
             
             for label in row {
-                let button = CalculatorButton(title: label)
+                let button = CalculatorButton(button: label)
                 button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
                 rowStackView.addArrangedSubview(button)
             }

@@ -13,19 +13,19 @@ protocol HomePresenterProtocol {
 }
 
 final class HomePresenter {
-    var portaitStructure: [[String]] = [
-        ["⌫", "(", ")", "÷"],
-        ["7", "8", "9", "×"],
-        ["4", "5", "6", "－"],
-        ["1", "2", "3", "+"],
-        ["AC", "0", ".", "="]
+    var portaitStructure: [[CButton]] = [
+        [.delete, .openBr, .closeBr, .divide],
+        [.seven, .eight, .nine, .multiply],
+        [.four, .five, .six, .minus],
+        [.one, .two, .three, .add],
+        [.clear, .zero, .dot, .equal]
     ]
     
-    var lanscapeStructure: [[String]] = [
-        ["7", "8", "9", "⌫", "÷"],
-        ["4", "5", "6",  "(", "×"],
-        ["1", "2", "3", ")", "－"],
-        ["AC", "0", ".", "=", "+"]
+    var lanscapeStructure: [[CButton]] = [
+        [.seven, .eight, .nine, .delete, .divide],
+        [.four, .five, .six,  .openBr, .multiply],
+        [.one, .two, .three, .closeBr, .minus],
+        [.clear, .zero, .dot, .equal, .add]
     ]
     
     weak var view: HomeViewProtocol?

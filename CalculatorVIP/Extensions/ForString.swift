@@ -13,7 +13,7 @@ extension String {
     var strToElementsOfArray: [String] {
         var strArr: [String] = []
         var number = ""
-        let operators = "÷×－+)"
+        let operators = Op.withClBr.r
         
         for char in self {
             if char.isNumber || char == "." {
@@ -33,7 +33,30 @@ extension String {
             strArr.append(number)
         }
         
-        return strArr
+        var newArr: [String] = []
+        
+        if let first = strArr.first {
+            
+            if first == "-" {
+                newArr.append("0")
+            }
+            
+            newArr.append(first)
+        }
+        
+        for i in 0..<strArr.count - 1 {
+            
+            if strArr[i] == "(" && strArr[i+1] == "-" {
+                newArr.append("0")
+            }
+            
+            newArr.append(strArr[i+1])
+        }
+        
+        print("New arr \(newArr)")
+        
+        
+        return newArr
     }
 }
 
