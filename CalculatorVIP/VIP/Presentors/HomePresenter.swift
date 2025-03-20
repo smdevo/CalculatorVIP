@@ -47,12 +47,8 @@ extension HomePresenter: HomePresenterProtocol {
     
     func changeCalculatorPosition(to orientation: CalculatorOrientation) {
         let structure = orientation == .landscale ? lanscapeStructure : portaitStructure
-        switch orientation {
-        case .landscale:
-            view?.setNumberPadStackView(from: structure, isRemoveAllEmentsFromStack: true)
-        case .portrait:
-            view?.setNumberPadStackView(from: structure, isRemoveAllEmentsFromStack: true)
-        }
+        
+        view?.setNumberPadStackView(from: structure, isRemoveAllEmentsFromStack: true)
     }
 }
 

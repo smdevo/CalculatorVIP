@@ -50,40 +50,34 @@ final class RPNService: RPNServiceProtocol {
         print("Tokens \(tokens)")
         
         
-        // let precedence: [Character: Int] = ["+": 1, "-": 1, "*": 2, "/": 2]
         let precedence: [String: Int] = ["+": 1, "－": 1, "×": 2, "÷": 2]
         var output: [String] = [], stack: [String] = []
         
         for token in tokens {
             
             if let _ = Double(token) {
-                output.append("\(token) ") // Son bo‘lsa chiqishga yozamiz
+                output.append("\(token)") // Son bo‘lsa chiqishga yozamiz
             } else if let _ = precedence[token] {
                 while let last = stack.last, let lastPrec = precedence[last], lastPrec >= precedence[token]! {
-                    output.append("\(stack.popLast()!) ")
+                    output.append("\(stack.popLast()!)")
                 }
                 stack.append(token) // Operatorni stack ga qo‘shamiz
             } else if token == "(" {
                 stack.append(token) // Ochuvchi qavsni stack ga qo‘shamiz
             } else if token == ")" {
                 while let last = stack.last, last != "(" {
-                    output.append("\(stack.popLast()!) ")
+                    output.append("\(stack.popLast()!)")
                 }
                 let _ = stack.popLast() // Ochuvchi qavsni olib tashlaymiz
             }
         }
         
         while let last = stack.popLast() {
-            output.append("\(last) ")
+            output.append("\(last)")
         }
         
         
-        // let res = output.trimmingCharacters(in: .whitespaces)
-        
-        print("Output \(output)")
-        
-        
-        return output.map({$0.filter({$0 != " "})})
+        return output
     }
     
     private func calculateRPN(postFix: [String]) -> Double? {

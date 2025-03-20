@@ -11,8 +11,6 @@ protocol InputSourceServiceProtocol {
     func addingBtnToLabel(label: String, labelBtn: String) -> String?
 }
 
-//why dont we need protocols for services
-
 
 final class InputSourceService: InputSourceServiceProtocol {
     
@@ -115,7 +113,6 @@ final class InputSourceService: InputSourceServiceProtocol {
     //private functions
     
     private func checkingForCloseTheBracket(str: String) -> Bool {
-        
         return str.filter({$0 == "("}).count > str.filter({$0 == ")"}).count
     }
     

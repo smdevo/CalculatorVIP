@@ -15,11 +15,11 @@
  
  8.8 - 5                               -> done
  
- setting constraint extention
+ setting constraint extention          -> done
  
  after = need to change if number pressed
  
- need to fix orientation
+ need to fix orientation               -> done
  
  Enum from numbers
 

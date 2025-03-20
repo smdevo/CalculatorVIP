@@ -5,10 +5,7 @@
 //  Created by Samandar on 12/03/25.
 //
 
-enum CalculatorOrientation {
-    case landscale
-    case portrait
-}
+
 
 protocol HomeInteractorProtocol {
     func onViewDidLoad()

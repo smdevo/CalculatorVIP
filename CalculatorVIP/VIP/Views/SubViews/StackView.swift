@@ -15,7 +15,6 @@ final class StackView: UIStackView {
         spacing: CGFloat = .zero
     ) {
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
         self.axis = axis
         self.distribution = distribution
         self.alignment = alignment

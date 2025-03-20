@@ -18,7 +18,6 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
         print("Raw Value \(rawValue)")
         let cleanStr    = cleanEnd(str: rawValue)
         let completeStr = addingNeededBrackets(str: cleanStr)
-        print("Complete \(completeStr)")
         return completeStr
     }
     
