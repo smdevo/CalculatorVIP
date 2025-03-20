@@ -23,11 +23,11 @@ enum CButton: String {
     var backgroundColor: UIColor {
         switch self {
         case .add, .minus, .multiply, .divide, .equal:
-            return .orange
+            return UIColor.theme.operatorColor
         case .clear, .openBr, .closeBr, .delete:
-            return .lightGray
+            return UIColor.theme.bracketColor
         default:
-            return .darkGray
+            return UIColor.theme.numberColor
         }
     }
     

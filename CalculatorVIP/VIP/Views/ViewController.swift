@@ -56,7 +56,7 @@ final class HomeViewController: UIViewController {
     // MARK: - UIFunctions
     
     private func setUpViews() {
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor.theme.backgroundColor
         view.addSubview(scrollViewForLabel)
         view.addSubview(numberPadStackView)
         scrollViewForLabel.addSubview(label)
@@ -71,21 +71,21 @@ final class HomeViewController: UIViewController {
         numberPadStackView.setConstraints(
             helperView: view,
             isFromSafeArea: true,
-            l: .spacing(.x4),
-            r:  -.spacing(.x4),
-            b: -.spacing(.x4),
-            h: UIScreen.main.bounds.height / 2)
+            left: .spacing(.x4),
+            right:  -.spacing(.x4),
+            bottom: -.spacing(.x4),
+            height: UIScreen.main.bounds.height / 2)
         
         scrollViewForLabel.setConstraints(
             helperView: view,
             isFromSafeArea: true,
-            l: .spacing(.x4),
-            r: -.spacing(.x4),
-            h: UIScreen.main.bounds.height / .spacing(.x3))
+            left: .spacing(.x4),
+            right: -.spacing(.x4),
+            height: UIScreen.main.bounds.height / .spacing(.x3))
         
         scrollViewForLabel.setConstraints(
             helperView: numberPadStackView,
-            bToT: -.spacing(.x1))
+            bottomToTop: -.spacing(.x1))
         
         label.setConstraints(
             helperView: scrollViewForLabel,

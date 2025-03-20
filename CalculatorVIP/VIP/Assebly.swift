@@ -9,6 +9,10 @@
 //MARK: - Tasks
 /*
  
+ Writing Tests
+ 
+ adding expression label and change after equal sign and signing expression into tableView
+ 
  need to understand well infinix to postfix
  
  need to know why we have " " after the element in infinix_to_postfix function
@@ -21,13 +25,13 @@
  
  need to fix orientation               -> done
  
- Enum from numbers
+ Enum from numbers                     -> done
 
  Making smaller label when writing
 
  Creating Rpn service                  -> done
 
- Implementing minus
+ Implementing minus                    -> done
 
  Making another page of history
 

@@ -14,16 +14,16 @@ extension  UIView {
     func setConstraints(
         helperView hv: UIView,
         isFromSafeArea: Bool = false,
-        l: CGFloat? = nil,
-        r: CGFloat? = nil,
-        t: CGFloat? = nil,
-        b: CGFloat? = nil,
-        w: CGFloat? = nil,
-        h: CGFloat? = nil,
-        lToR: CGFloat? = nil,
-        rToL: CGFloat? = nil,
-        tToB: CGFloat? = nil,
-        bToT: CGFloat? = nil,
+        left: CGFloat? = nil,
+        right: CGFloat? = nil,
+        top: CGFloat? = nil,
+        bottom: CGFloat? = nil,
+        width: CGFloat? = nil,
+        height: CGFloat? = nil,
+        leftToRight: CGFloat? = nil,
+        rightToLeft: CGFloat? = nil,
+        topToBottom: CGFloat? = nil,
+        bottomToTop: CGFloat? = nil,
         hGTAnchor: Bool = false,
         wGTAnchor: Bool = false
     ){
@@ -31,32 +31,32 @@ extension  UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         //MARK: Simple
-        if let left = l {
+        if let left {
             leadingAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.leadingAnchor : hv.leadingAnchor,
                 constant: left).isActive = true
         }
-        if let right = r {
+        if let right {
             trailingAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.trailingAnchor : hv.trailingAnchor,
                 constant: right).isActive = true
         }
-        if let top = t {
+        if let top  {
             topAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.topAnchor : hv.topAnchor,
                 constant: top).isActive = true
         }
-        if let bottom = b {
+        if let bottom {
             bottomAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.bottomAnchor : hv.bottomAnchor,
                 constant: bottom).isActive = true
         }
         
         //MARK: width, Height
-        if let height = h {
+        if let height {
             heightAnchor.constraint(equalToConstant: height).isActive = true
         }
-        if let width = w {
+        if let width {
             widthAnchor.constraint(equalToConstant: width).isActive = true
         }
         
@@ -69,22 +69,22 @@ extension  UIView {
         
         
         //MARK: Reverse
-        if let leftToRight = lToR {
+        if let leftToRight {
             leadingAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.trailingAnchor : hv.trailingAnchor,
                 constant: leftToRight).isActive = true
         }
-        if let rightToLeft = rToL {
+        if let rightToLeft {
            trailingAnchor.constraint(
             equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.leadingAnchor : hv.leadingAnchor,
                 constant: rightToLeft).isActive = true
         }
-        if let topToBottom = tToB {
+        if let topToBottom {
             topAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.bottomAnchor : hv.bottomAnchor,
                 constant: topToBottom).isActive = true
         }
-        if let bottomToTop = bToT {
+        if let bottomToTop {
             bottomAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.topAnchor : hv.topAnchor,
                 constant: bottomToTop).isActive = true
