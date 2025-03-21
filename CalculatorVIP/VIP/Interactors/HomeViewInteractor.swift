@@ -12,6 +12,7 @@ protocol HomeInteractorProtocol {
     func processResult(label: String, labelBtn: CButton)
     func didChangedOrientation(to orientation: CalculatorOrientation)
     func fetchHistory()
+   // func addHistory()
 }
 
 final class HomeInteractor {
@@ -41,6 +42,8 @@ extension HomeInteractor: HomeInteractorProtocol {
     
     func onViewDidLoad() {
         presenter.setNumberPadStackView()
+        
+        fetchHistory()
     }
         
     func processResult(label: String, labelBtn: CButton) {
@@ -51,6 +54,16 @@ extension HomeInteractor: HomeInteractorProtocol {
         
         if labelBtn == .equal {
             resultLabel = worker.calculateTheResult(label: label)
+            
+            guard
+                let res = resultLabel.0,
+                let exp = resultLabel.1 else {return}
+            
+            
+           let calculationsSaved =  worker.addHistory(expression: exp + " = " + res)
+            
+            presenter.fetchResult(calculations: calculationsSaved)
+            
         }else {
             resultLabel = (worker.addingBtnToLabel(label: label, labelBtn: labelBtn),nil)
         }

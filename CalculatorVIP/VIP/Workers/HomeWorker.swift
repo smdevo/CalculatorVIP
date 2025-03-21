@@ -11,6 +11,7 @@ protocol HomeWorkerProtocol {
     func addingBtnToLabel(label: String, labelBtn: CButton) -> String?
     func calculateTheResult(label: String) -> (String?, String?)
     func fetchHistory() -> [Calculation]
+    func addHistory(expression: String) -> [Calculation]
 }
 
 
@@ -29,6 +30,13 @@ final class HomeWorker {
 
 
 extension HomeWorker: HomeWorkerProtocol {
+    
+    func addHistory(expression: String) -> [Calculation] {
+        historyDataService.saveCalculation(calculationStr: expression)
+        
+        return historyDataService.fetchHistory()
+    }
+    
     
     func fetchHistory() -> [Calculation] {
         return historyDataService.fetchHistory()

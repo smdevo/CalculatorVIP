@@ -16,7 +16,7 @@ protocol HistoryDataServiseProtocol {
     func fetchHistory() -> [Calculation]
     
     //create
-    func saveCalculation(calculationStr: String) -> [Calculation]
+    func saveCalculation(calculationStr: String)
     
     //delete
     func removeCalculation(indexPath: Int, items: [Calculation]) -> [Calculation]
@@ -47,7 +47,7 @@ final class HistoryDataServise: HistoryDataServiseProtocol {
         }
     
     
-    func saveCalculation(calculationStr: String) -> [Calculation] {
+    func saveCalculation(calculationStr: String) {
         let newCalculation = Calculation(context: context)
         
         newCalculation.date = Date()
@@ -55,7 +55,6 @@ final class HistoryDataServise: HistoryDataServiseProtocol {
         
         finalSave()
         
-        return fetchHistory()
     }
     
 

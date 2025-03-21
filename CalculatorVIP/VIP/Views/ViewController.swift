@@ -170,7 +170,13 @@ extension HomeViewController: HomeViewProtocol {
     
     
     func displayHistory(calculations: [Calculation]) {
+        
+        self.calculations.removeAll()
+        
+        
         self.calculations = calculations
+        
+        tableView.reloadData()
     }
     
     
