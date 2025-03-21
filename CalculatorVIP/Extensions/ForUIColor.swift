@@ -19,6 +19,6 @@ struct ColorTheme {
     let numberColor = UIColor(named: "numberColor") ?? .darkGray
     let bracketColor = UIColor(named: "bracketColor") ?? .lightGray
     let operatorColor = UIColor(named: "operatorColor") ?? .orange
-    let labelColor = UIColor(named: "labelColor") ?? .white
+    let labelCalcColor = UIColor(named: "labelCalcColor") ?? .white
 }
 

@@ -13,7 +13,7 @@ final class CustomLabel: UILabel {
          minimumScaleFactor: CGFloat = 0.6,
          adjustsFontSizeToFitWidth: Bool = true,
          textAlignment: NSTextAlignment  = .right,
-         textColor: UIColor = UIColor.theme.labelColor
+         textColor: UIColor = UIColor.theme.labelCalcColor
     ){
         super.init(frame: .zero)
         

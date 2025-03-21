@@ -15,7 +15,7 @@
  
  need to understand well infinix to postfix
  
- need to know why we have " " after the element in infinix_to_postfix function
+ need to know why we have " " after the element in infinix_to_postfix function -> done
  
  8.8 - 5                               -> done
  
