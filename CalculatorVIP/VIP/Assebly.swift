@@ -9,6 +9,11 @@
 //MARK: - Tasks
 /*
  
+ 
+ need to create custom cell with data
+ 
+ need to create accout to access from all devices
+ 
  Writing Tests
  
  adding expression label and change after equal sign and signing expression into tableView
@@ -60,12 +65,17 @@ final class HomeAssembly: HomeAssemblyProtocol {
         let rpnService = RPNService()
          
         let inputSourceOfRPnService = InputSourceService()
+         
+        let historyDataService = HistoryDataServise()
     
         let presenter = HomePresenter()
         
         let router = HomeRouter()
         
-        let worker = HomeWorker(rpnCalculatorService: rpnService, inputSourceOfRpnService: inputSourceOfRPnService)
+         let worker = HomeWorker(
+            rpnCalculatorService: rpnService,
+            inputSourceOfRpnService: inputSourceOfRPnService,
+            historyDataService: historyDataService)
         
         let interactor = HomeInteractor(presenter: presenter, worker: worker)
         

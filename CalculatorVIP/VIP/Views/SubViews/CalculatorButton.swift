@@ -14,7 +14,7 @@ final class CalculatorButton: UIButton {
         titleLabel?.font = UIFont.systemFont(ofSize: .spacing(.x8), weight: .bold)
         setTitleColor(.white, for: .normal)
         backgroundColor = button.backgroundColor
-        layer.cornerRadius = UIDevice.current.orientation.isLandscape ? .spacing(.x6) : .spacing(.x10)
+        layer.cornerRadius = UIDevice.current.orientation.isLandscape ? .spacing(.x5) : .spacing(.x7)
     }
     
     required init?(coder: NSCoder) {

@@ -11,6 +11,7 @@ protocol HomeInteractorProtocol {
     func onViewDidLoad()
     func processResult(label: String, labelBtn: CButton)
     func didChangedOrientation(to orientation: CalculatorOrientation)
+    func fetchHistory()
 }
 
 final class HomeInteractor {
@@ -29,6 +30,14 @@ final class HomeInteractor {
 }
 
 extension HomeInteractor: HomeInteractorProtocol {
+    
+
+    func fetchHistory() {
+        let calculations = worker.fetchHistory()
+        
+        presenter.fetchResult(calculations: calculations)
+    }
+    
     
     func onViewDidLoad() {
         presenter.setNumberPadStackView()

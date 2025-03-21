@@ -10,22 +10,30 @@ import Foundation
 protocol HomeWorkerProtocol {
     func addingBtnToLabel(label: String, labelBtn: CButton) -> String?
     func calculateTheResult(label: String) -> (String?, String?)
+    func fetchHistory() -> [Calculation]
 }
 
 
 final class HomeWorker {
-    let rpnCalculatorService: RPNService
-    let inputSourceOfRpnService: InputSourceService
+    let rpnCalculatorService: RPNServiceProtocol
+    let inputSourceOfRpnService: InputSourceServiceProtocol
+    let historyDataService: HistoryDataServiseProtocol
     
     
-    init(rpnCalculatorService: RPNService, inputSourceOfRpnService: InputSourceService) {
+    init(rpnCalculatorService: RPNServiceProtocol, inputSourceOfRpnService: InputSourceServiceProtocol, historyDataService: HistoryDataServiseProtocol) {
         self.rpnCalculatorService = rpnCalculatorService
         self.inputSourceOfRpnService = inputSourceOfRpnService
+        self.historyDataService = historyDataService
     }
 }
 
 
 extension HomeWorker: HomeWorkerProtocol {
+    
+    func fetchHistory() -> [Calculation] {
+        return historyDataService.fetchHistory()
+    }
+    
     func addingBtnToLabel(label: String, labelBtn: CButton) -> String? {
         inputSourceOfRpnService.addingBtnToLabel(label: label, labelBtn: labelBtn)
     }

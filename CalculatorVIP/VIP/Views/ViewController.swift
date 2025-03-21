@@ -14,6 +14,7 @@ import UIKit
 protocol HomeViewProtocol: AnyObject {
     func displayResult(result: String, expression: String?)
     func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool)
+    func displayHistory(calculations: [Calculation])
 }
 
 //MARK: View
@@ -30,6 +31,12 @@ final class HomeViewController: UIViewController {
     private let scrollViewForLabel: UIScrollView = CustomScrollView()
     
     private let numberPadStackView = StackView(spacing: .spacing(.x2))
+    
+    private let tableView = CustomTableView()
+    
+    
+    
+    var calculations: [Calculation] = []
     
     
     override func viewDidLoad() {
@@ -59,28 +66,41 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = UIColor.theme.backgroundColor
         view.addSubview(scrollViewForLabel)
         view.addSubview(numberPadStackView)
+        view.addSubview(tableView)
         scrollViewForLabel.addSubview(label)
+        
+        setUpTableView()
         
         setConstraints()
         
         interactor.onViewDidLoad()
     }
     
+    private func setUpTableView() {
+        
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomCell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+    }
+    
     private func setConstraints() {
+        
+
         
         numberPadStackView.setConstraints(
             helperView: view,
             isFromSafeArea: true,
-            left: .spacing(.x4),
-            right:  -.spacing(.x4),
-            bottom: -.spacing(.x4),
-            height: UIScreen.main.bounds.height / 2)
-        
+            left: .spacing(.x1),
+            right:  -.spacing(.x1),
+            bottom: -.spacing(.x1),
+            height: (UIScreen.main.bounds.height) / 9 * 4)
+
         scrollViewForLabel.setConstraints(
             helperView: view,
             isFromSafeArea: true,
-            left: .spacing(.x4),
-            right: -.spacing(.x4),
+            left: .spacing(.x1),
+            right: -.spacing(.x1),
             height: UIScreen.main.bounds.height / .spacing(.x3))
         
         scrollViewForLabel.setConstraints(
@@ -91,6 +111,18 @@ final class HomeViewController: UIViewController {
             helperView: scrollViewForLabel,
             hGTAnchor: true,
             wGTAnchor: true)
+        
+        tableView.setConstraints(
+            helperView: view,
+            isFromSafeArea: true,
+            left: .spacing(.x1),
+            right: -(.spacing(.x1)),
+            top: .spacing(.x1))
+        
+        tableView.setConstraints(
+            helperView: scrollViewForLabel,
+            bottomToTop: 0)
+//
     }
     
     private func resetView() {
@@ -133,8 +165,14 @@ final class HomeViewController: UIViewController {
     }
 }
 
-//MARK: ExtensionView
+//MARK: Extension For Preview
 extension HomeViewController: HomeViewProtocol {
+    
+    
+    func displayHistory(calculations: [Calculation]) {
+        self.calculations = calculations
+    }
+    
     
     func displayResult(result: String, expression: String?) {
         
@@ -169,3 +207,121 @@ extension HomeViewController: HomeViewProtocol {
         }
     }
 }
+
+
+//MARK: Extension For TableView
+
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return calculations.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
+        
+        let calculation = calculations[indexPath.row]
+        
+        cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).description)
+        
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+           // interactor?.deleteCalculation(id: calculations[indexPath.row].id)
+        }
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+enum TestExpression: String, CaseIterable {
+    case short = "5 + 4 = 9"
+    case medium = "12 + 8 + 5 = 25"
+    case long = "5 + 4 + 22 + 9 + 19 + 22 + ((5 + 4 + 22 + 9 + 19) + 22) = 1035 + 4 + 22 + 9 + 19 + 22 + ((5 + 4 + 22 + 9 + 19) + 22) = 103"
+    case complex = "8 * (3 + 2) - 7 = 33"
+    case extreme = "50 / 2 + (7 * 3) - 4 = 36"
+    case tricky = "3^3 - 10 / 2 = 25"
+    case negative = "-7 + 3 * 5 = 8"
+    case division = "144 / 12 + 6 = 18"
+    case fraction = "1/2 + 3/4 = 5/4"
+    case exponential = "2^5 - 3 = 29"
+    case modulo = "23 % 5 = 3"
+    case squareRoot = "√49 + 2 = 9"
+    
+    var random: String {
+        return TestExpression.allCases.randomElement()?.rawValue ?? ""
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        tableView.setConstraints(
+//            helperView: view,
+//            left: .spacing(.x1),
+//            right: -(.spacing(.x1)),
+//            top: .spacing(.x1),
+//            height: UIScreen.main.bounds.height / 2)
+//
+//
+//        scrollViewForLabel.setConstraints(
+//            helperView: view,
+//            isFromSafeArea: true,
+//            left: .spacing(.x2),
+//            right: -(.spacing(.x2)),
+//            height: 50)
+//
+//        scrollViewForLabel.setConstraints(
+//            helperView: tableView,
+//            topToBottom: 0)
+//
+//
+//        label.setConstraints(
+//            helperView: scrollViewForLabel,
+//            hGTAnchor: true,
+//            wGTAnchor: true)
+//
+//
+//        numberPadStackView.setConstraints(
+//            helperView: view,
+//            isFromSafeArea: true,
+//            left: .spacing(.x1),
+//            right: -(.spacing(.x1)),
+//            bottom: -(.spacing(.x1)))
+//
+//        numberPadStackView.setConstraints(
+//            helperView: scrollViewForLabel,
+//            topToBottom: .spacing(.x1))
+        
+        
