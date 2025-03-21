@@ -9,7 +9,7 @@ import Foundation
 
 protocol HomeWorkerProtocol {
     func addingBtnToLabel(label: String, labelBtn: CButton) -> String?
-    func calculateTheResult(label: String) -> String?
+    func calculateTheResult(label: String) -> (String?, String?)
 }
 
 
@@ -30,7 +30,7 @@ extension HomeWorker: HomeWorkerProtocol {
         inputSourceOfRpnService.addingBtnToLabel(label: label, labelBtn: labelBtn)
     }
     
-    func calculateTheResult(label: String) -> String? {
+    func calculateTheResult(label: String) -> (String?, String?) {
         rpnCalculatorService.calculateAndGiveTheResult(calcLabel: label)
     }
 }

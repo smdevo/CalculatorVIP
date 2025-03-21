@@ -12,7 +12,7 @@ import UIKit
 
 //MARK: ViewProtocol
 protocol HomeViewProtocol: AnyObject {
-    func displayResult(result: String)
+    func displayResult(result: String, expression: String?)
     func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool)
 }
 
@@ -136,7 +136,18 @@ final class HomeViewController: UIViewController {
 //MARK: ExtensionView
 extension HomeViewController: HomeViewProtocol {
     
-    func displayResult(result: String) {
+    func displayResult(result: String, expression: String?) {
+        
+        if let expression {
+            
+            print("Expression: \(expression)")
+            
+        }else {
+            
+            //not expression
+            
+        }
+        
         label.text = result
         updateLabelSize()
     }

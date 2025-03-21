@@ -38,17 +38,19 @@ extension HomeInteractor: HomeInteractorProtocol {
         
         //print("Processing inside the interactor")
         
-        var resultLabel: String?
+        var resultLabel: (String?,String?)
         
         if labelBtn == .equal {
             resultLabel = worker.calculateTheResult(label: label)
         }else {
-            resultLabel = worker.addingBtnToLabel(label: label, labelBtn: labelBtn)
+            resultLabel = (worker.addingBtnToLabel(label: label, labelBtn: labelBtn),nil)
         }
           
-        guard let resultLabel else {return}
+        guard
+            let result = resultLabel.0
+        else {return}
         
-        presenter.presentResult(result: resultLabel)
+        presenter.presentResult(result: result, expression: resultLabel.1)
         
     }
     

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RPNServiceProtocol {
-    func calculateAndGiveTheResult(calcLabel: String) -> String?
+    func calculateAndGiveTheResult(calcLabel: String) -> (String?, String?)
 }
 
 
@@ -17,11 +17,11 @@ final class RPNService: RPNServiceProtocol {
     
    private let infinixUseCase = FromRawValueToInfinixUseCase()
     
-    func calculateAndGiveTheResult(calcLabel: String) -> String? {
+    func calculateAndGiveTheResult(calcLabel: String) -> (String?, String?) {
         
         if extractingComponents(str: calcLabel).count == 1 {
             print("First \(calcLabel)")
-            return nil
+            return (nil,nil)
         }
 
         let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
@@ -32,12 +32,12 @@ final class RPNService: RPNServiceProtocol {
         print("Postfix: \(postfix)")
         
         guard let calculatedResult = calculateRPN(postFix: postfix) else {
-            return "Undefined"
+            return ("Undefined",infinix)
         }
         
         let roundedResult = round(calculatedResult*1e5)/1e5
 
-        return roundedResult.stringForm
+        return (roundedResult.stringForm, infinix)
         
     }
     

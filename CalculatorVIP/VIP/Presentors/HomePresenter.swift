@@ -7,7 +7,7 @@
 
 
 protocol HomePresenterProtocol {
-    func presentResult(result: String)
+    func presentResult(result: String, expression: String?)
     func setNumberPadStackView()
     func changeCalculatorPosition(to orientation: CalculatorOrientation)
 }
@@ -34,11 +34,11 @@ final class HomePresenter {
 
 extension HomePresenter: HomePresenterProtocol {
         
-    func presentResult(result: String) {
+    func presentResult(result: String, expression: String?) {
         
        // print("Saying the view to present Result")
         
-        view?.displayResult(result: result)
+        view?.displayResult(result: result, expression: expression)
     }
     
     func setNumberPadStackView() {
