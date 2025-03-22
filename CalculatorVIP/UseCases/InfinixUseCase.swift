@@ -26,7 +26,7 @@ struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
 
     private func cleanEnd(str: String) -> String {
         var newStr = str
-        while Op.withDot.r.contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
+        while Op.withDotOpBr.r.contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
             newStr = newStr.withoutLastElement
         }
         return newStr.isEmpty ? "0" : newStr

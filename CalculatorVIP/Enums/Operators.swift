@@ -9,6 +9,8 @@ enum Op: String {
     
     case only     = "÷×-+"
     case withDot  = "÷×-+."
+    case withDotOpBr  = "÷×-+.("
+    case withDotClBr  = "÷×-+.)"
     case withOpBr = "÷×-+("
     case withClBr = "÷×-+)"
     case withBrs  = "÷×-+()"
