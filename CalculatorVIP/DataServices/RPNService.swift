@@ -23,6 +23,8 @@ final class RPNService: RPNServiceProtocol {
             print("First \(calcLabel)")
             return (nil,nil)
         }
+        
+        print("EX C \(extractingComponents(str: calcLabel))")
 
         let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
         
@@ -110,7 +112,7 @@ final class RPNService: RPNServiceProtocol {
     }
     
     private func extractingComponents(str: String) -> [String] {
-        let operators = CharacterSet(charactersIn: Op.only.r)
+        let operators = CharacterSet(charactersIn: Op.all.r)
         let components = str.components(separatedBy: operators)
         return components.filter {!$0.isEmpty}
     }
