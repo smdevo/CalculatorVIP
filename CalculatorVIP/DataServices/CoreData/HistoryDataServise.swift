@@ -9,9 +9,7 @@ import UIKit
 import CoreData
 
 protocol HistoryDataServiseProtocol {
-    
-   // var history: [Calculation] {get}
-    
+        
     //read
     func fetchHistory() -> [Calculation]
     
@@ -21,8 +19,6 @@ protocol HistoryDataServiseProtocol {
     //delete
     func removeCalculation(indexPath: Int, items: [Calculation])
     
-//    //reload
-//    func reloadHistory()
 }
 
 
@@ -31,9 +27,7 @@ final class HistoryDataServise: HistoryDataServiseProtocol {
     
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-   // var history: [Calculation] = []
-    
+        
     
     func fetchHistory() -> [Calculation] {
         let request: NSFetchRequest<Calculation> = Calculation.fetchRequest()
@@ -49,25 +43,18 @@ final class HistoryDataServise: HistoryDataServiseProtocol {
     
     func saveCalculation(calculationStr: String) {
         let newCalculation = Calculation(context: context)
-        
         newCalculation.date = Date()
         newCalculation.expression = calculationStr
-        
         finalSave()
-        
     }
     
 
     func removeCalculation(indexPath: Int, items: [Calculation]) {
-        
         let dataToRemove = items[indexPath]
         context.delete(dataToRemove)
         finalSave()
     }
     
-//    func reloadHistory() {
-//        <#code#>
-//    }
     
     
     private func finalSave() {
