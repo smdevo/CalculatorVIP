@@ -10,7 +10,7 @@ protocol HomePresenterProtocol {
     func presentResult(result: String, expression: String?)
     func setNumberPadStackView()
     func changeCalculatorPosition(to orientation: CalculatorOrientation)
-    func fetchResult(calculations: [Calculation])
+    func presentHistory(calculations: [Calculation])
 }
 
 final class HomePresenter {
@@ -36,7 +36,7 @@ final class HomePresenter {
 extension HomePresenter: HomePresenterProtocol {
     
     
-    func fetchResult(calculations: [Calculation]) {
+    func presentHistory(calculations: [Calculation]) {
         view?.displayHistory(calculations: calculations)
     }
     

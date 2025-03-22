@@ -36,7 +36,7 @@ final class HomeViewController: UIViewController {
     
     
     
-    var calculations: [Calculation] = []
+    private var calculations: [Calculation] = []
     
     
     override func viewDidLoad() {
@@ -77,16 +77,12 @@ final class HomeViewController: UIViewController {
     }
     
     private func setUpTableView() {
-        
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomCell")
         tableView.dataSource = self
         tableView.delegate = self
-        
     }
     
     private func setConstraints() {
-        
-
         
         numberPadStackView.setConstraints(
             helperView: view,
@@ -173,8 +169,18 @@ extension HomeViewController: HomeViewProtocol {
         
         self.calculations.removeAll()
         
-        
         self.calculations = calculations
+        
+        tableView.reloadData()
+
+        DispatchQueue.main.async {
+            let lastIndex = IndexPath(row: self.calculations.count - 1, section: 0)
+            if self.calculations.count > 0 {
+                self.tableView.scrollToRow(at: lastIndex, at: .bottom, animated: false)
+            }
+        }
+
+
         
         tableView.reloadData()
     }
@@ -237,7 +243,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-           // interactor?.deleteCalculation(id: calculations[indexPath.row].id)
+            interactor.deleteCalculation(indexPath: indexPath.row, items: calculations)
         }
     }
     
@@ -262,72 +268,4 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 
-enum TestExpression: String, CaseIterable {
-    case short = "5 + 4 = 9"
-    case medium = "12 + 8 + 5 = 25"
-    case long = "5 + 4 + 22 + 9 + 19 + 22 + ((5 + 4 + 22 + 9 + 19) + 22) = 1035 + 4 + 22 + 9 + 19 + 22 + ((5 + 4 + 22 + 9 + 19) + 22) = 103"
-    case complex = "8 * (3 + 2) - 7 = 33"
-    case extreme = "50 / 2 + (7 * 3) - 4 = 36"
-    case tricky = "3^3 - 10 / 2 = 25"
-    case negative = "-7 + 3 * 5 = 8"
-    case division = "144 / 12 + 6 = 18"
-    case fraction = "1/2 + 3/4 = 5/4"
-    case exponential = "2^5 - 3 = 29"
-    case modulo = "23 % 5 = 3"
-    case squareRoot = "√49 + 2 = 9"
-    
-    var random: String {
-        return TestExpression.allCases.randomElement()?.rawValue ?? ""
-    }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-//        tableView.setConstraints(
-//            helperView: view,
-//            left: .spacing(.x1),
-//            right: -(.spacing(.x1)),
-//            top: .spacing(.x1),
-//            height: UIScreen.main.bounds.height / 2)
-//
-//
-//        scrollViewForLabel.setConstraints(
-//            helperView: view,
-//            isFromSafeArea: true,
-//            left: .spacing(.x2),
-//            right: -(.spacing(.x2)),
-//            height: 50)
-//
-//        scrollViewForLabel.setConstraints(
-//            helperView: tableView,
-//            topToBottom: 0)
-//
-//
-//        label.setConstraints(
-//            helperView: scrollViewForLabel,
-//            hGTAnchor: true,
-//            wGTAnchor: true)
-//
-//
-//        numberPadStackView.setConstraints(
-//            helperView: view,
-//            isFromSafeArea: true,
-//            left: .spacing(.x1),
-//            right: -(.spacing(.x1)),
-//            bottom: -(.spacing(.x1)))
-//
-//        numberPadStackView.setConstraints(
-//            helperView: scrollViewForLabel,
-//            topToBottom: .spacing(.x1))
-        
-        

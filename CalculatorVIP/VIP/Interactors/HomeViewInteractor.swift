@@ -5,13 +5,14 @@
 //  Created by Samandar on 12/03/25.
 //
 
-
+import Foundation
 
 protocol HomeInteractorProtocol {
     func onViewDidLoad()
     func processResult(label: String, labelBtn: CButton)
     func didChangedOrientation(to orientation: CalculatorOrientation)
     func fetchHistory()
+    func deleteCalculation(indexPath: Int, items: [Calculation])
    // func addHistory()
 }
 
@@ -32,11 +33,20 @@ final class HomeInteractor {
 
 extension HomeInteractor: HomeInteractorProtocol {
     
+    
+    func deleteCalculation(indexPath: Int, items: [Calculation]) {
+        worker.deleteCalculation(indexPath: indexPath, items: items)
+        
+        let resultAfterDeeletion = worker.fetchHistory()
+        
+        presenter.presentHistory(calculations: resultAfterDeeletion)
+    }
 
+    
     func fetchHistory() {
         let calculations = worker.fetchHistory()
         
-        presenter.fetchResult(calculations: calculations)
+        presenter.presentHistory(calculations: calculations)
     }
     
     
@@ -57,12 +67,14 @@ extension HomeInteractor: HomeInteractorProtocol {
             
             guard
                 let res = resultLabel.0,
-                let exp = resultLabel.1 else {return}
+                let exp = resultLabel.1
+            else {return}
             
+            worker.addHistory(expression: exp + " = " + res)
             
-           let calculationsSaved =  worker.addHistory(expression: exp + " = " + res)
+            let calculationsSaved =  worker.fetchHistory()
             
-            presenter.fetchResult(calculations: calculationsSaved)
+            presenter.presentHistory(calculations: calculationsSaved)
             
         }else {
             resultLabel = (worker.addingBtnToLabel(label: label, labelBtn: labelBtn),nil)

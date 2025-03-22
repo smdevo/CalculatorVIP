@@ -11,7 +11,8 @@ protocol HomeWorkerProtocol {
     func addingBtnToLabel(label: String, labelBtn: CButton) -> String?
     func calculateTheResult(label: String) -> (String?, String?)
     func fetchHistory() -> [Calculation]
-    func addHistory(expression: String) -> [Calculation]
+    func addHistory(expression: String)
+    func deleteCalculation(indexPath: Int, items: [Calculation])
 }
 
 
@@ -31,11 +32,15 @@ final class HomeWorker {
 
 extension HomeWorker: HomeWorkerProtocol {
     
-    func addHistory(expression: String) -> [Calculation] {
-        historyDataService.saveCalculation(calculationStr: expression)
-        
-        return historyDataService.fetchHistory()
+    
+    func deleteCalculation(indexPath: Int, items: [Calculation]) {
+        historyDataService.removeCalculation(indexPath: indexPath, items: items)
     }
+    
+    
+    func addHistory(expression: String) {
+        historyDataService.saveCalculation(calculationStr: expression)
+        }
     
     
     func fetchHistory() -> [Calculation] {

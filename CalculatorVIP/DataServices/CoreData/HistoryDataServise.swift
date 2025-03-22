@@ -19,7 +19,7 @@ protocol HistoryDataServiseProtocol {
     func saveCalculation(calculationStr: String)
     
     //delete
-    func removeCalculation(indexPath: Int, items: [Calculation]) -> [Calculation]
+    func removeCalculation(indexPath: Int, items: [Calculation])
     
 //    //reload
 //    func reloadHistory()
@@ -58,12 +58,11 @@ final class HistoryDataServise: HistoryDataServiseProtocol {
     }
     
 
-    func removeCalculation(indexPath: Int, items: [Calculation]) -> [Calculation] {
+    func removeCalculation(indexPath: Int, items: [Calculation]) {
         
         let dataToRemove = items[indexPath]
         context.delete(dataToRemove)
         finalSave()
-        return fetchHistory()
     }
     
 //    func reloadHistory() {
