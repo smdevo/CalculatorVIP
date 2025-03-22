@@ -22,7 +22,11 @@ final class HomeWorker {
     let historyDataService: HistoryDataServiseProtocol
     
     
-    init(rpnCalculatorService: RPNServiceProtocol, inputSourceOfRpnService: InputSourceServiceProtocol, historyDataService: HistoryDataServiseProtocol) {
+    init(
+        rpnCalculatorService: RPNServiceProtocol,
+        inputSourceOfRpnService: InputSourceServiceProtocol,
+        historyDataService: HistoryDataServiseProtocol)
+    {
         self.rpnCalculatorService = rpnCalculatorService
         self.inputSourceOfRpnService = inputSourceOfRpnService
         self.historyDataService = historyDataService

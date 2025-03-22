@@ -12,6 +12,6 @@ extension Double {
         if let intValue = Int(exactly: self) {
             return String(intValue)
         }
-        return String(self).replacingOccurrences(of: "-", with: "－") //
+        return String(self)
     }
 }

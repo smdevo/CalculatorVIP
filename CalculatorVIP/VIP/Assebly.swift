@@ -9,8 +9,11 @@
 //MARK: - Tasks
 /*
  
+ adding bucket for deletion
  
- need to create custom cell with data
+ need to fix time formatting                      -> done
+ 
+ need to create custom cell with data             -> done
  
  need to create accout to access from all devices
  
@@ -40,11 +43,11 @@
 
  Making another page of history
 
- Making above history
+ Making above history                  -> done
 
  Instead of if -> guard string?        -> done
 
- CoreData with history in tableView
+ CoreData with history in tableView    -> done
  
  V ekrane toje rpn vidno c skobkoy and postfix form
  
@@ -77,7 +80,9 @@ final class HomeAssembly: HomeAssemblyProtocol {
             inputSourceOfRpnService: inputSourceOfRPnService,
             historyDataService: historyDataService)
         
-        let interactor = HomeInteractor(presenter: presenter, worker: worker)
+        let interactor = HomeInteractor(
+            presenter: presenter,
+            worker: worker)
         
         let viewController = HomeViewController(
             interactor: interactor,

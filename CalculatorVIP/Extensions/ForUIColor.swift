@@ -20,5 +20,6 @@ struct ColorTheme {
     let bracketColor = UIColor(named: "bracketColor") ?? .lightGray
     let operatorColor = UIColor(named: "operatorColor") ?? .orange
     let labelCalcColor = UIColor(named: "labelCalcColor") ?? .white
+    let historyLabelColor = UIColor(named: "historyLabelColor") ?? .gray
 }
 

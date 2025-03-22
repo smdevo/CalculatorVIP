@@ -55,8 +55,8 @@ extension String {
         
         print("New arr \(newArr)")
         
-        
         return newArr
     }
+    
 }
 

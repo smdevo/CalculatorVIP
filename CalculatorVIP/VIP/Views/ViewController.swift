@@ -235,7 +235,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         
         let calculation = calculations[indexPath.row]
         
-        cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).description)
+        print(calculation.expression ?? "1+1")
+        
+       // cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
         
         return cell
     }
