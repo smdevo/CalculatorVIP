@@ -24,7 +24,10 @@ final class InputSourceService: InputSourceServiceProtocol {
             
       //1
         case .clear:
-            return label != B.zero.r ? B.zero.r : nil
+            
+            return  B.zero.r
+            
+           // return label != B.zero.r ? B.zero.r : nil
             
             
       //2
@@ -126,7 +129,7 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             if
                 let lastNumber = gettingLastNumber(str: label),
-                lastNumber == B.zero.r && !Op.only.r.contains(lastElement)
+                lastNumber == B.zero.r && !Op.withBrs.r.contains(lastElement)
             {
                 return label.withoutLastElement + labelBtn.r
             }

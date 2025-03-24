@@ -33,7 +33,6 @@ extension HomeInteractor: HomeInteractorProtocol {
     
     func onViewDidLoad() {
         presenter.setNumberPadStackView()
-        
         fetchHistory()
     }
     
@@ -50,16 +49,13 @@ extension HomeInteractor: HomeInteractorProtocol {
         guard let history = historywithResult.1 else {
             return
         }
-        
         presenter.presentHistory(calculations: history)
         
     }
     
     func deleteCalculation(indexPath: Int, items: [Calculation]) {
         worker.deleteCalculation(indexPath: indexPath, items: items)
-        
         let resultAfterDeeletion = worker.fetchHistory()
-        
         presenter.presentHistory(calculations: resultAfterDeeletion)
     }
     

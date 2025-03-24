@@ -158,19 +158,31 @@ final class HomeViewController: UIViewController {
         else { return }
         
         if a {
-            
             interactor.processResultAndHistory(label: labelTitle, labelBtn: btn)
             
+            if btn == .equal {
+                a = false
+            }
+        }else {
             if btn == .equal {
                 
                 a = false
                 
+            }else {
+                
+                if
+                    [CButton.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, CButton.zero].contains(btn) ||
+                        (label.text != nil && label.text!.last != nil && label.text!.last!.isLetter)
+                {
+                    interactor.processResultAndHistory(label: "0", labelBtn: btn)
+                    a = true
+                }else {
+                    interactor.processResultAndHistory(label: labelTitle, labelBtn: btn)
+                }
+                
+                a = true
+                
             }
-        }else {
-            interactor.processResultAndHistory(label: "0", labelBtn: btn)
-            
-            a = true
-            
         }
        
         
@@ -242,9 +254,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         
         let calculation = calculations[indexPath.row]
         
-        print(calculation.expression ?? "1+1")
+       // print(calculation.expression ?? "1+1")
         
-    //    cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
+        cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
         
         return cell
     }

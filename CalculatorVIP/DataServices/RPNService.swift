@@ -37,7 +37,7 @@ final class RPNService: RPNServiceProtocol {
             return ("Undefined",infinix)
         }
         
-        let roundedResult = round(calculatedResult*1e5)/1e5
+        let roundedResult = round(calculatedResult*1e8)/1e8
 
         return (roundedResult.stringForm, infinix)
         
@@ -113,7 +113,7 @@ final class RPNService: RPNServiceProtocol {
     }
     
     private func extractingComponents(str: String) -> [String] {
-        let operators = CharacterSet(charactersIn: Op.all.r)
+        let operators = CharacterSet(charactersIn: Op.withBrs.r)
         let components = str.components(separatedBy: operators)
         return components.filter {!$0.isEmpty}
     }

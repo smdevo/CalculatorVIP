@@ -10,6 +10,16 @@
 /*
  
  
+ need to write unit test
+ 
+ need tachange string to enum
+ 
+ need to learn delegate
+ 
+ need to learn singleton
+ 
+ need to learn protocol
+ 
  need to fix time formatting                      -> done
  
  need to create custom cell with data             -> done

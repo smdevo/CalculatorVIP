@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>23</string>
+					<string>33</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>22</string>
+					<string>32</string>
 					<key>Timestamp</key>
-					<string>764333865.356064</string>
+					<string>764527633.547489</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -123,13 +123,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>247</string>
+					<string>259</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>246</string>
+					<string>258</string>
 					<key>Timestamp</key>
-					<string>764496288.4687279</string>
+					<string>764527091.315981</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -145,10 +145,10 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>    //    cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
+				<string>        cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
 </string>
 				<key>leading</key>
-				<string>        print(calculation.expression ?? "1+1")
+				<string>       // print(calculation.expression ?? "1+1")
         
 </string>
 				<key>trailing</key>
@@ -168,13 +168,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>21</string>
+					<string>31</string>
 					<key>StartingColumnNumber</key>
-					<string>90</string>
+					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>20</string>
+					<string>30</string>
 					<key>Timestamp</key>
-					<string>764333889.693917</string>
+					<string>764527633.547383</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -190,12 +190,12 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>
+				<string> adding expression label and change after equal sign and signing expression into tableView
 </string>
 				<key>leading</key>
 				<string> Writing Tests
  
- adding expression label and change after equal sign and signing expression into tableView</string>
+</string>
 				<key>trailing</key>
 				<string> 
  need to understand well infinix to postfix
