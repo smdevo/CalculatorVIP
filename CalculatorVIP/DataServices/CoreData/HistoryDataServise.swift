@@ -66,32 +66,3 @@ final class HistoryDataServise: HistoryDataServiseProtocol {
     }
     
 }
-
-
-
-
-//// MARK: - Core Data Entity
-//extension Calculation {
-//    @nonobjc public class func fetchRequest() -> NSFetchRequest<Calculation> {
-//        return NSFetchRequest<Calculation>(entityName: "Calculation")
-//    }
-//    @NSManaged public var title: String?
-//}
-
-
-
-
-
-//    func fetchHistory() {
-//        <#code#>
-//    }
-
-//    func fetchHistory(onSuccess: @escaping ([Calculation]?) -> Void) {
-//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//        do {
-//            let items = try context.fetch(Calculation.fetchRequest()) as? [Calculation]
-//            onSuccess(items)
-//        } catch {
-//            print("error-Fetching data")
-//        }
-//    }

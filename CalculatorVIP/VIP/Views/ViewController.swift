@@ -12,7 +12,7 @@ import UIKit
 
 //MARK: ViewProtocol
 protocol HomeViewProtocol: AnyObject {
-    func displayResult(result: String, expression: String?)
+    func displayResult(result: String)
     func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool)
     func displayHistory(calculations: [Calculation])
 }
@@ -23,6 +23,8 @@ final class HomeViewController: UIViewController {
     // Dependency
     var interactor: HomeInteractorProtocol
     var router: HomeRouterProtocol
+    
+    var a: Bool = true
     
     // MARK: - UI Elements
     // CalculatorLabel
@@ -155,9 +157,26 @@ final class HomeViewController: UIViewController {
             let labelTitle = label.text
         else { return }
         
+        if a {
+            
+            interactor.processResultAndHistory(label: labelTitle, labelBtn: btn)
+            
+            if btn == .equal {
+                
+                a = false
+                
+            }
+        }else {
+            interactor.processResultAndHistory(label: "0", labelBtn: btn)
+            
+            a = true
+            
+        }
+       
         
         
-        interactor.processResult(label: labelTitle, labelBtn: btn)
+//        interactor.processResult(label: labelTitle, labelBtn: btn)
+
     }
 }
 
@@ -180,23 +199,11 @@ extension HomeViewController: HomeViewProtocol {
             }
         }
 
-
-        
         tableView.reloadData()
     }
     
     
-    func displayResult(result: String, expression: String?) {
-        
-        if let expression {
-            
-            print("Expression: \(expression)")
-            
-        }else {
-            
-            //not expression
-            
-        }
+    func displayResult(result: String) {
         
         label.text = result
         updateLabelSize()
@@ -235,9 +242,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         
         let calculation = calculations[indexPath.row]
         
-        //print(calculation.expression ?? "1+1")
+        print(calculation.expression ?? "1+1")
         
-        cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
+    //    cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
         
         return cell
     }

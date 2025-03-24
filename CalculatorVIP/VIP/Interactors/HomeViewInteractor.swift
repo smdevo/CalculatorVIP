@@ -9,11 +9,9 @@ import Foundation
 
 protocol HomeInteractorProtocol {
     func onViewDidLoad()
-    func processResult(label: String, labelBtn: CButton)
+    func processResultAndHistory(label: String, labelBtn: CButton)
     func didChangedOrientation(to orientation: CalculatorOrientation)
-    func fetchHistory()
     func deleteCalculation(indexPath: Int, items: [Calculation])
-   // func addHistory()
 }
 
 final class HomeInteractor {
@@ -33,6 +31,29 @@ final class HomeInteractor {
 
 extension HomeInteractor: HomeInteractorProtocol {
     
+    func onViewDidLoad() {
+        presenter.setNumberPadStackView()
+        
+        fetchHistory()
+    }
+    
+    func processResultAndHistory(label: String, labelBtn: CButton) {
+        
+        let historywithResult = worker
+            .processResultAndAddHistoryIfNeeded(label: label, labelBtn: labelBtn)
+        
+        guard let result = historywithResult.0 else {
+            return
+        }
+        presenter.presentResult(result: result)
+        
+        guard let history = historywithResult.1 else {
+            return
+        }
+        
+        presenter.presentHistory(calculations: history)
+        
+    }
     
     func deleteCalculation(indexPath: Int, items: [Calculation]) {
         worker.deleteCalculation(indexPath: indexPath, items: items)
@@ -41,54 +62,14 @@ extension HomeInteractor: HomeInteractorProtocol {
         
         presenter.presentHistory(calculations: resultAfterDeeletion)
     }
-
-    
-    func fetchHistory() {
-        let calculations = worker.fetchHistory()
-        
-        presenter.presentHistory(calculations: calculations)
-    }
-    
-    
-    func onViewDidLoad() {
-        presenter.setNumberPadStackView()
-        
-        fetchHistory()
-    }
-        
-    func processResult(label: String, labelBtn: CButton) {
-        
-        //print("Processing inside the interactor")
-        
-        var resultLabel: (String?,String?)
-        
-        if labelBtn == .equal {
-            resultLabel = worker.calculateTheResult(label: label)
-            
-            guard
-                let res = resultLabel.0,
-                let exp = resultLabel.1
-            else {return}
-            
-            worker.addHistory(expression: exp + " = " + res)
-            
-            let calculationsSaved =  worker.fetchHistory()
-            
-            presenter.presentHistory(calculations: calculationsSaved)
-            
-        }else {
-            resultLabel = (worker.addingBtnToLabel(label: label, labelBtn: labelBtn),nil)
-        }
-          
-        guard
-            let result = resultLabel.0
-        else {return}
-        
-        presenter.presentResult(result: result, expression: resultLabel.1)
-        
-    }
     
     func didChangedOrientation(to orientation: CalculatorOrientation) {
         presenter.changeCalculatorPosition(to: orientation)
     }
+    
+    private func fetchHistory() {
+        let calculations = worker.fetchHistory()
+        presenter.presentHistory(calculations: calculations)
+    }
+    
 }

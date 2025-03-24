@@ -24,8 +24,8 @@ final class RPNService: RPNServiceProtocol {
             return (nil,nil)
         }
         
-        print("EX C \(extractingComponents(str: calcLabel))")
-
+        print("Raw Value: \(calcLabel)")
+        
         let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
         
         print("Infinix: \(infinix)")
@@ -47,27 +47,29 @@ final class RPNService: RPNServiceProtocol {
     
     private func infinixToPostFix(_ expression: String) -> [String] {
         
-        let tokens = expression.strToElementsOfArray
+        let arrElements = expression.strToElementsOfArray
         
-        print("Tokens \(tokens)")
-        
+     //   print("Elements of Array \(arrElements)")
         
         let precedence: [String: Int] =
         [CButton.add.r: 1, CButton.minus.r: 1, CButton.multiply.r: 2, CButton.divide.r: 2]
         var output: [String] = [], stack: [String] = []
         
-        for token in tokens {
+        for element in arrElements {
             
-            if let _ = Double(token) {
-                output.append("\(token)") // Son bo‘lsa chiqishga yozamiz
-            } else if let _ = precedence[token] {
-                while let last = stack.last, let lastPrec = precedence[last], lastPrec >= precedence[token]! {
+            if let _ = Double(element) {
+                output.append("\(element)") // Son bo‘lsa chiqishga yozamiz
+            } else if let _ = precedence[element] {
+                while let last = stack.last,
+                        let lastPrec = precedence[last],
+                        lastPrec >= precedence[element]!
+                {
                     output.append("\(stack.popLast()!)")
                 }
-                stack.append(token) // Operatorni stack ga qo‘shamiz
-            } else if token == "(" {
-                stack.append(token) // Ochuvchi qavsni stack ga qo‘shamiz
-            } else if token == ")" {
+                stack.append(element) // Operatorni stack ga qo‘shamiz
+            } else if element == "(" {
+                stack.append(element) // Ochuvchi qavsni stack ga qo‘shamiz
+            } else if element == ")" {
                 while let last = stack.last, last != "(" {
                     output.append("\(stack.popLast()!)")
                 }
@@ -96,7 +98,6 @@ final class RPNService: RPNServiceProtocol {
                 let last = customStack.pop(),
                 let bLast = customStack.pop()
                 else {
-                    print("Craaash")
                     return nil
                 }
                 switch eachElement {

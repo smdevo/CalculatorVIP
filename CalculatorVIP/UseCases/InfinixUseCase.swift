@@ -14,8 +14,6 @@ protocol FromRawValueToInfinixProtocol {
 struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
     
     func makingInfinixFromRaw(rawValue: String) -> String {
-        
-        print("Raw Value \(rawValue)")
         let cleanStr    = cleanEnd(str: rawValue)
         let completeStr = addingNeededBrackets(str: cleanStr)
         return completeStr

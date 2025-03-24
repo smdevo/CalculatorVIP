@@ -8,10 +8,8 @@ import Foundation
 
 
 protocol HomeWorkerProtocol {
-    func addingBtnToLabel(label: String, labelBtn: CButton) -> String?
-    func calculateTheResult(label: String) -> (String?, String?)
+    func processResultAndAddHistoryIfNeeded(label: String, labelBtn: CButton) -> (String?,[Calculation]?)
     func fetchHistory() -> [Calculation]
-    func addHistory(expression: String)
     func deleteCalculation(indexPath: Int, items: [Calculation])
 }
 
@@ -36,30 +34,43 @@ final class HomeWorker {
 
 extension HomeWorker: HomeWorkerProtocol {
     
+    func processResultAndAddHistoryIfNeeded(label: String, labelBtn: CButton) -> (String?,[Calculation]?) {
+                
+        if labelBtn == .equal {
+            let resultLabel: (res: String?, expr: String?) = rpnCalculatorService.calculateAndGiveTheResult(calcLabel: label)
+           
+            guard
+                let res = resultLabel.res,
+                let exp = resultLabel.expr
+            else {return (nil,nil)}
+            
+            historyDataService.saveCalculation(calculationStr:  exp + " = " + res)
+            
+            let calculationsSaved =  historyDataService.fetchHistory()
+            
+            return (res, calculationsSaved)
+            
+        } else {
+            
+            let  result = inputSourceOfRpnService
+                .addingBtnToLabel(label: label, labelBtn: labelBtn)
+          
+            return (result,nil)
+        }
+
+    }
+    
+    
     
     func deleteCalculation(indexPath: Int, items: [Calculation]) {
         historyDataService.removeCalculation(indexPath: indexPath, items: items)
     }
     
     
-    func addHistory(expression: String) {
-        historyDataService.saveCalculation(calculationStr: expression)
-        }
-    
     
     func fetchHistory() -> [Calculation] {
         return historyDataService.fetchHistory()
     }
     
-    func addingBtnToLabel(label: String, labelBtn: CButton) -> String? {
-        inputSourceOfRpnService.addingBtnToLabel(label: label, labelBtn: labelBtn)
-    }
-    
-    func calculateTheResult(label: String) -> (String?, String?) {
-        rpnCalculatorService.calculateAndGiveTheResult(calcLabel: label)
-    }
 }
 
-// understanding
-// need to testng
-// nma ma'no

@@ -15,6 +15,15 @@ extension String {
         var number = ""
         let operators = Op.withClBr.r
         
+        
+        if let first = self.first {
+            if first == "-" {
+                strArr.append("0")
+            }
+        }
+        
+        var oneBeforeEl: Character? = nil
+        
         for char in self {
             if char.isNumber || char == "." {
                 number.append(char)
@@ -24,38 +33,23 @@ extension String {
                     number = ""
                 }
                 if operators.contains(char) || !char.isWhitespace {
+                    
+                    if oneBeforeEl == "(" && char == "-" {
+                        strArr.append("0")
+                    }
+                    
                     strArr.append(char.intoString)
                 }
             }
+            
+            oneBeforeEl = char
         }
         
         if !number.isEmpty {
             strArr.append(number)
         }
         
-        var newArr: [String] = []
-        
-        if let first = strArr.first {
-            
-            if first == "-" {
-                newArr.append("0")
-            }
-            
-            newArr.append(first)
-        }
-        
-        for i in 0..<strArr.count - 1 {
-            
-            if strArr[i] == "(" && strArr[i+1] == "-" {
-                newArr.append("0")
-            }
-            
-            newArr.append(strArr[i+1])
-        }
-        
-        print("New arr \(newArr)")
-        
-        return newArr
+        return strArr
     }
     
 }
