@@ -36,6 +36,14 @@ final class HomeViewController: UIViewController {
     
     private let tableView = CustomTableView()
     
+    private let clearAllButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        
+        
+        return button
+    }()
+    
     
     
     private var calculations: [Calculation] = []
@@ -230,7 +238,7 @@ extension HomeViewController: HomeViewProtocol {
             let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
             
             for label in row {
-                let button = CalculatorButton(button: label)
+                let button = CalculatorButton(button: label, type: .system)
                 button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
                 rowStackView.addArrangedSubview(button)
             }
