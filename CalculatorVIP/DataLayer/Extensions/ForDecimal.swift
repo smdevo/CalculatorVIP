@@ -10,19 +10,15 @@ import Foundation
 extension Decimal {
     
     var strDesc: String {
-        
         let formatter = NumberFormatter()
-        formatter.numberStyle = .scientific
-        formatter.maximumFractionDigits = 2  // Limit decimal places
-        formatter.exponentSymbol = "e"
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
         
-        
-        if let sciString = formatter.string(from: self as NSDecimalNumber) {
-            return sciString  // Output: "1.23e+19"
+        if self.exponent >= 8 || self.exponent <= -8 {
+            formatter.numberStyle = .scientific
+            formatter.exponentSymbol = "e"
         }
         
-        return self.description
-        
+        return formatter.string(from: self as NSDecimalNumber) ?? self.description
     }
-   
 }

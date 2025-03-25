@@ -39,12 +39,7 @@ final class RPNService: RPNServiceProtocol {
             return ("Undefined",infix)
         }
         
-//        let roundedResult = round(calculatedResult*1e8)/1e8
-//
-//        return (roundedResult.stringForm, infix)
-        
         return (calculatedResult.strDesc, infix)
-        
     }
     
     
