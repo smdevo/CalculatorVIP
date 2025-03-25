@@ -68,7 +68,7 @@ final class HomeViewController: UIViewController {
         return button
     }()
 
-    private let numberPadStackView: UIStackView = StackView(spacing: .spacing(.x2))
+    private let numberPadStackView: UIStackView = CustomStackView(spacing: .spacing(.x2))
     
 
     
@@ -231,7 +231,7 @@ extension HomeViewController: HomeViewProtocol {
     
     func displayNumberPadStackView(from structure: [[CButton]]) {
         for row in structure {
-            let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
+            let rowStackView = CustomStackView(axis: .horizontal, spacing: .spacing(.x2))
             
             for label in row {
                 let button = CalculatorButton(button: label)

@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 protocol RPNServiceProtocol {
     func calculateAndGiveTheResult(calcLabel: String) -> (String?, String?)
 }
@@ -38,9 +39,11 @@ final class RPNService: RPNServiceProtocol {
             return ("Undefined",infix)
         }
         
-        let roundedResult = round(calculatedResult*1e8)/1e8
-
-        return (roundedResult.stringForm, infix)
+//        let roundedResult = round(calculatedResult*1e8)/1e8
+//
+//        return (roundedResult.stringForm, infix)
+        
+        return (calculatedResult.strDesc, infix)
         
     }
     
@@ -85,14 +88,14 @@ final class RPNService: RPNServiceProtocol {
         return postFix.allElements()
     }
     
-    private func calculateRPN(postFix: [String]) -> Double? {
+    private func calculateRPN(postFix: [String]) -> Decimal? {
         
-        var customStack = CustomStack<Double>()
+        var customStack = CustomStack<Decimal>()
         
         for eachElement in postFix {
             
             if let number = Double(eachElement) {
-                customStack.push(element: number)
+                customStack.push(element: Decimal(number))
             }else {
                 guard
                 let last = customStack.pop(),

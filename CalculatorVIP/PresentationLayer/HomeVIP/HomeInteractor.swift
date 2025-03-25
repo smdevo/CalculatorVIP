@@ -37,13 +37,13 @@ extension HomeInteractor: HomeInteractorProtocol {
     
     func addButtonToLabel(label: String, labelBtn: CButton) {
         
-        guard let completeLabel = worker.addButtonLabel(label: label, labelBtn: labelBtn) else {return}
+        guard let completeLabel = worker.addButtonLabel(label: label, labelBtn: labelBtn) else { return }
         presenter.presentResult(result: completeLabel)
         
     }
     
     func calculateAndAddToHistory(label: String) {
-        guard let resultLabel =  worker.calCulateAndSaveToHistory(label: label) else {return}
+        guard let resultLabel =  worker.calCulateAndSaveToHistory(label: label) else { return }
         
         presenter.presentResult(result: resultLabel)
         
