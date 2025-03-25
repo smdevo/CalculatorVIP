@@ -15,7 +15,8 @@ protocol RPNServiceProtocol {
 final class RPNService: RPNServiceProtocol {
     
     
-   private let infinixUseCase = FromRawValueToInfinixUseCase()
+    private let infixFromRawValueUseCase = FromRawValueToInfinixUseCase()
+    private let fromStringToArrayUseCase = FromStringToArrayUseCase()
     
     func calculateAndGiveTheResult(calcLabel: String) -> (String?, String?) {
         
@@ -26,20 +27,20 @@ final class RPNService: RPNServiceProtocol {
         
         print("Raw Value: \(calcLabel)")
         
-        let infinix = infinixUseCase.makingInfinixFromRaw(rawValue: calcLabel)
+        let infix = infixFromRawValueUseCase.makingInfixFromRaw(rawValue: calcLabel)
         
-        print("Infinix: \(infinix)")
+        print("Infinix: \(infix)")
         
-        let postfix = infinixToPostFix(infinix)
+        let postfix = infinixToPostFix(infix)
         print("Postfix: \(postfix)")
         
         guard let calculatedResult = calculateRPN(postFix: postfix) else {
-            return ("Undefined",infinix)
+            return ("Undefined",infix)
         }
         
         let roundedResult = round(calculatedResult*1e8)/1e8
 
-        return (roundedResult.stringForm, infinix)
+        return (roundedResult.stringForm, infix)
         
     }
     
@@ -47,42 +48,41 @@ final class RPNService: RPNServiceProtocol {
     
     private func infinixToPostFix(_ expression: String) -> [String] {
         
-        let arrElements = expression.strToElementsOfArray
-        
-     //   print("Elements of Array \(arrElements)")
-        
+        let arrElements = fromStringToArrayUseCase.fromStringToElementsOfArray(value: expression)
+                
         let precedence: [String: Int] =
         [CButton.add.r: 1, CButton.minus.r: 1, CButton.multiply.r: 2, CButton.divide.r: 2]
-        var output: [String] = [], stack: [String] = []
+        var postFix = CustomStack<String>()
+        var opers = CustomStack<String>()
         
         for element in arrElements {
             
             if let _ = Double(element) {
-                output.append("\(element)") // Son bo‘lsa chiqishga yozamiz
+                postFix.push(element: element)
             } else if let _ = precedence[element] {
-                while let last = stack.last,
+                while let last = opers.peek(),
                         let lastPrec = precedence[last],
                         lastPrec >= precedence[element]!
                 {
-                    output.append("\(stack.popLast()!)")
+                    postFix.push(element: opers.pop()!)
                 }
-                stack.append(element) // Operatorni stack ga qo‘shamiz
+                opers.push(element: element) // Operatorni stack ga qo‘shamiz
             } else if element == "(" {
-                stack.append(element) // Ochuvchi qavsni stack ga qo‘shamiz
+                opers.push(element: element) // Ochuvchi qavsni stack ga qo‘shamiz
             } else if element == ")" {
-                while let last = stack.last, last != "(" {
-                    output.append("\(stack.popLast()!)")
+                while let last = opers.peek(), last != "(" {
+                    postFix.push(element: opers.pop()!)//.append("\(stack.popLast()!)")
                 }
-                let _ = stack.popLast() // Ochuvchi qavsni olib tashlaymiz
+                let _ = opers.pop()//.popLast() // Ochuvchi qavsni olib tashlaymiz
             }
         }
         
-        while let last = stack.popLast() {
-            output.append("\(last)")
+        while let last = opers.pop() {//.popLast() {
+            postFix.push(element: last)//.append("\(last)")
         }
         
         
-        return output
+        return postFix.allElements()
     }
     
     private func calculateRPN(postFix: [String]) -> Double? {
@@ -109,7 +109,7 @@ final class RPNService: RPNServiceProtocol {
                 }
             }
         }
-        return customStack.result
+        return customStack.peek()
     }
     
     private func extractingComponents(str: String) -> [String] {

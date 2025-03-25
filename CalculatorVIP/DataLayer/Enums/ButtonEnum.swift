@@ -16,9 +16,6 @@ enum CButton: String {
     case clear = "AC", delete = "⌫"
     case dot = "."
     case equal = "="
-    
-    
-    
 
     var backgroundColor: UIColor {
         switch self {

@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol FromRawValueToInfinixProtocol {
-    func makingInfinixFromRaw(rawValue: String) -> String
+protocol FromRawValueToInfixProtocol {
+    func makingInfixFromRaw(rawValue: String) -> String
 }
 
-struct FromRawValueToInfinixUseCase: FromRawValueToInfinixProtocol {
+struct FromRawValueToInfinixUseCase: FromRawValueToInfixProtocol {
     
-    func makingInfinixFromRaw(rawValue: String) -> String {
+    func makingInfixFromRaw(rawValue: String) -> String {
         let cleanStr    = cleanEnd(str: rawValue)
         let completeStr = addingNeededBrackets(str: cleanStr)
         return completeStr

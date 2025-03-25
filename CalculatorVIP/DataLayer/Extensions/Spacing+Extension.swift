@@ -25,7 +25,4 @@ extension CGFloat {
         space.rawValue
     }
     
-    var minusSpacing: CGFloat {
-        -(self)
-    }
 }

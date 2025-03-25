@@ -38,8 +38,16 @@ struct CustomStack<T> {
         return elements.removeLast()
     }
     
-    var result: T? {
-        return elements.last
+    func peek() -> T? {
+            return elements.last
+        }
+    
+    func isEmpty() -> Bool {
+            return elements.isEmpty
+        }
+    
+    func allElements() -> [T] {
+        return elements
     }
     
 }

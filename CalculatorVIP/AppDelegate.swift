@@ -17,30 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         let homeViewController = HomeAssembly().creteCalcHomeViewController()
-       // window?.rootViewController = UINavigationController(rootViewController: homeViewController)
         window?.rootViewController = homeViewController
         window?.makeKeyAndVisible()
-        
-      //  setNavBarTransparent()
-        
+                
         return true
     }
     
     
-//    func setNavBarTransparent() {
-//        
-//        let appearance = UINavigationBarAppearance()
-//        appearance.configureWithTransparentBackground()
-//        appearance.backgroundColor = .red
-//        appearance.shadowColor = .red
-//        
-//        UINavigationBar.appearance().standardAppearance = appearance
-//        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-//        UINavigationBar.appearance().compactAppearance = appearance
-//        UINavigationBar.appearance().isTranslucent = true
-//        
-//        
-//    }
     
     // MARK: - Core Data stack
 

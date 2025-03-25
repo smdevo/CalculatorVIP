@@ -93,6 +93,7 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             return label + labelBtn.r
         
+        //6
         case .minus:
             
             if label == B.zero.r {
@@ -108,7 +109,7 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             return label + labelBtn.r
             
-        //6
+        //7
         case .dot:
             
             if Op.withOpBr.r.contains(lastElement) {return label + B.zero.r + B.dot.r}
@@ -122,7 +123,7 @@ final class InputSourceService: InputSourceServiceProtocol {
             return label + B.dot.r
             
             
-        //7
+        //8
         default:
             
             if label == B.zero.r { return labelBtn.r }

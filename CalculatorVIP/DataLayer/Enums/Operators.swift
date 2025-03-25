@@ -7,14 +7,14 @@
 
 enum Op: String {
     
-    case only     = "÷×-+"
-    case withDot  = "÷×-+."
+    case only         = "÷×-+"
+    case withDot      = "÷×-+."
     case withDotOpBr  = "÷×-+.("
     case withDotClBr  = "÷×-+.)"
-    case withOpBr = "÷×-+("
-    case withClBr = "÷×-+)"
-    case withBrs  = "÷×-+()"
-    case all      = "÷×-+()."
+    case withOpBr     = "÷×-+("
+    case withClBr     = "÷×-+)"
+    case withBrs      = "÷×-+()"
+    case all          = "÷×-+()."
     
     
     var r: String {
@@ -22,6 +22,3 @@ enum Op: String {
     }
 }
 
-
-
-//－
