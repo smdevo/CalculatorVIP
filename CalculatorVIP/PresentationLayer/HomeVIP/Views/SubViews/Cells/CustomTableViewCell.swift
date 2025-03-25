@@ -24,7 +24,7 @@ final class CustomTableViewCell: UITableViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.theme.bracketColor
-        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textAlignment = .right
         return label
     }()

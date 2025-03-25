@@ -9,9 +9,10 @@ import Foundation
 
 protocol HomeInteractorProtocol {
     func onViewDidLoad()
-    func processResultAndHistory(label: String, labelBtn: CButton)
-    func didChangedOrientation(to orientation: CalculatorOrientation)
-    func deleteCalculation(indexPath: Int, items: [Calculation])
+    func addButtonToLabel(label: String, labelBtn: CButton)
+    func calculateAndAddToHistory(label: String)
+    func delateCalculation(indexPath: Int, items: [Calculation])
+    func clearHistory()
 }
 
 final class HomeInteractor {
@@ -19,9 +20,7 @@ final class HomeInteractor {
     //MARK: Dependencies
     private let presenter: HomePresenterProtocol
     private let worker: HomeWorkerProtocol
-    
-    //MARK: - Init
-    
+        
     init(presenter: HomePresenterProtocol, worker: HomeWorkerProtocol) {
         self.presenter = presenter
         self.worker = worker
@@ -32,38 +31,38 @@ final class HomeInteractor {
 extension HomeInteractor: HomeInteractorProtocol {
     
     func onViewDidLoad() {
-        presenter.setNumberPadStackView()
-        fetchHistory()
+        presenter.presentNumberPadStackView()
+        fetchAndGiveHistoryToPresenter()
     }
     
-    func processResultAndHistory(label: String, labelBtn: CButton) {
+    func addButtonToLabel(label: String, labelBtn: CButton) {
         
-        let historywithResult = worker
-            .processResultAndAddHistoryIfNeeded(label: label, labelBtn: labelBtn)
-        
-        guard let result = historywithResult.0 else {
-            return
-        }
-        presenter.presentResult(result: result)
-        
-        guard let history = historywithResult.1 else {
-            return
-        }
-        presenter.presentHistory(calculations: history)
+        guard let completeLabel = worker.addButtonLabel(label: label, labelBtn: labelBtn) else {return}
+        presenter.presentResult(result: completeLabel)
         
     }
     
-    func deleteCalculation(indexPath: Int, items: [Calculation]) {
+    func calculateAndAddToHistory(label: String) {
+        guard let resultLabel =  worker.calCulateAndSaveToHistory(label: label) else {return}
+        
+        presenter.presentResult(result: resultLabel)
+        
+        fetchAndGiveHistoryToPresenter()
+    }
+    
+    
+    func delateCalculation(indexPath: Int, items: [Calculation]) {
         worker.deleteCalculation(indexPath: indexPath, items: items)
-        let resultAfterDeeletion = worker.fetchHistory()
-        presenter.presentHistory(calculations: resultAfterDeeletion)
+        fetchAndGiveHistoryToPresenter()
     }
     
-    func didChangedOrientation(to orientation: CalculatorOrientation) {
-        presenter.changeCalculatorPosition(to: orientation)
+    func clearHistory() {
+        worker.clearHistory()
+        fetchAndGiveHistoryToPresenter()
     }
     
-    private func fetchHistory() {
+    
+    private func fetchAndGiveHistoryToPresenter() {
         let calculations = worker.fetchHistory()
         presenter.presentHistory(calculations: calculations)
     }

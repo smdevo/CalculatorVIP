@@ -12,13 +12,13 @@
  
  need to write unit test
  
- need tachange string to enum
+ need to change string to enum
  
  need to learn delegate
  
- need to learn singleton
+ need to learn singleton better
  
- need to learn protocol
+ need to learn protocol better
  
  need to fix time formatting                      -> done
  

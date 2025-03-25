@@ -8,9 +8,12 @@ import Foundation
 
 
 protocol HomeWorkerProtocol {
-    func processResultAndAddHistoryIfNeeded(label: String, labelBtn: CButton) -> (String?,[Calculation]?)
+    
+    func addButtonLabel(label: String, labelBtn: CButton) -> String?
+    func calCulateAndSaveToHistory(label: String) -> String?
     func fetchHistory() -> [Calculation]
     func deleteCalculation(indexPath: Int, items: [Calculation])
+    func clearHistory()
 }
 
 
@@ -34,42 +37,36 @@ final class HomeWorker {
 
 extension HomeWorker: HomeWorkerProtocol {
     
-    func processResultAndAddHistoryIfNeeded(label: String, labelBtn: CButton) -> (String?,[Calculation]?) {
-                
-        if labelBtn == .equal {
-            let resultLabel: (res: String?, expr: String?) = rpnCalculatorService.calculateAndGiveTheResult(calcLabel: label)
-           
-            guard
-                let res = resultLabel.res,
-                let exp = resultLabel.expr
-            else {return (nil,nil)}
-            
-            historyDataService.saveCalculation(calculationStr:  exp + " = " + res)
-            
-            let calculationsSaved =  historyDataService.fetchHistory()
-            
-            return (res, calculationsSaved)
-            
-        } else {
-            
-            let  result = inputSourceOfRpnService
-                .addingBtnToLabel(label: label, labelBtn: labelBtn)
-          
-            return (result,nil)
-        }
-
+    func addButtonLabel(label: String, labelBtn: CButton) -> String? {
+        let  result = inputSourceOfRpnService
+            .addingBtnToLabel(label: label, labelBtn: labelBtn)
+        
+        return result
     }
     
+    func calCulateAndSaveToHistory(label: String) -> String? {
+        
+        let result: (outcome: String?, clearExpression: String?) = rpnCalculatorService.calculateAndGiveTheResult(calcLabel: label)
+        guard
+            let res = result.outcome,
+            let exp = result.clearExpression
+        else {return nil}
+        
+        historyDataService.saveCalculation(calculationStr:  exp + " = " + res)
+        
+        return res
+    }
     
+    func fetchHistory() -> [Calculation] {
+        return historyDataService.fetchHistory()
+    }
     
     func deleteCalculation(indexPath: Int, items: [Calculation]) {
         historyDataService.removeCalculation(indexPath: indexPath, items: items)
     }
     
-    
-    
-    func fetchHistory() -> [Calculation] {
-        return historyDataService.fetchHistory()
+    func clearHistory() {
+        historyDataService.clearHistory()
     }
     
 }

@@ -8,13 +8,13 @@
 import UIKit
 
 final class CalculatorButton: UIButton {
-    init(button: CButton, type: UIButton.ButtonType) {
+    init(button: CButton) {
         super.init(frame: .zero)
         setTitle(button.rawValue, for: .normal)
         titleLabel?.font = UIFont.systemFont(ofSize: .spacing(.x8), weight: .bold)
         setTitleColor(.white, for: .normal)
         backgroundColor = button.backgroundColor
-        layer.cornerRadius = UIDevice.current.orientation.isLandscape ? .spacing(.x5) : .spacing(.x7)
+        layer.cornerRadius = .spacing(.x6)
     }
     
     required init?(coder: NSCoder) {

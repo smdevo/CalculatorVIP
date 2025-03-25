@@ -4,62 +4,80 @@
 //
 //  Created by Samandar on 12/03/25.
 //
+//Samandar
 
-//orientation
-//Provider in RPNService
 
 import UIKit
 
 //MARK: ViewProtocol
 protocol HomeViewProtocol: AnyObject {
-    func displayResult(result: String)
-    func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool)
+    func displayLabelResult(result: String)
+    func displayNumberPadStackView(from structure: [[CButton]])
     func displayHistory(calculations: [Calculation])
 }
 
 //MARK: View
 final class HomeViewController: UIViewController {
     
-    // Dependency
+    // MARK: - Dependencies
     var interactor: HomeInteractorProtocol
     var router: HomeRouterProtocol
+    
+    
+    // MARK: - Data
+    private var calculations: [Calculation] = []
+
+    
     
     var a: Bool = true
     
     // MARK: - UI Elements
-    // CalculatorLabel
-    private let label: UILabel = CustomLabel(text: "0")
     
-    private let scrollViewForLabel: UIScrollView = CustomScrollView()
+    private let label: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.font = UIFont.systemFont(ofSize: 55, weight: .bold)
+        label.minimumScaleFactor = 0.6
+        label.adjustsFontSizeToFitWidth = true
+        label.textAlignment  = .right
+        label.textColor = UIColor.theme.labelCalcColor
+        return label
+    }()
+   
+    private let scrollViewForLabel: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.alwaysBounceHorizontal = false
+        return scrollView
+    }()
     
-    private let numberPadStackView = StackView(spacing: .spacing(.x2))
-    
-    private let tableView = CustomTableView()
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.allowsSelection = false
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
+        return tableView
+    }()
     
     private let clearAllButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        
-        
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let image = UIImage(systemName: "trash", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor.theme.operatorColor
         return button
     }()
+
+    private let numberPadStackView: UIStackView = StackView(spacing: .spacing(.x2))
     
-    
-    
-    private var calculations: [Calculation] = []
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
     }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        let isLandscape = UIDevice.current.orientation.isLandscape
-        interactor.didChangedOrientation(to: isLandscape ? .landscale : .portrait)
-    }
-    
+
     init(interactor: HomeInteractorProtocol, router: HomeRouterProtocol) {
         self.interactor = interactor
         self.router = router
@@ -77,12 +95,13 @@ final class HomeViewController: UIViewController {
         view.addSubview(scrollViewForLabel)
         view.addSubview(numberPadStackView)
         view.addSubview(tableView)
+        view.addSubview(clearAllButton)
         scrollViewForLabel.addSubview(label)
         
-        setUpTableView()
+        clearAllButton.addTarget(self, action: #selector(clearAllHistory), for: .touchUpInside)
         
         setConstraints()
-        
+        setUpTableView()
         interactor.onViewDidLoad()
     }
     
@@ -118,6 +137,12 @@ final class HomeViewController: UIViewController {
             hGTAnchor: true,
             wGTAnchor: true)
         
+        clearAllButton.setConstraints(
+            helperView: view,
+            isFromSafeArea: true,
+            left: .spacing(.x4),
+            top: .spacing(.x2))
+        
         tableView.setConstraints(
             helperView: view,
             isFromSafeArea: true,
@@ -128,18 +153,6 @@ final class HomeViewController: UIViewController {
         tableView.setConstraints(
             helperView: scrollViewForLabel,
             bottomToTop: 0)
-//
-    }
-    
-    private func resetView() {
-        numberPadStackView.removeAllArrangedSubviews()
-        for subview in view.subviews {
-            subview.removeConstraints(subview.constraints)
-        }
-        for subview in scrollViewForLabel.subviews {
-            subview.removeConstraints(subview.constraints)
-        }
-        setConstraints()
     }
     
     private func updateLabelSize() {
@@ -165,117 +178,97 @@ final class HomeViewController: UIViewController {
             let labelTitle = label.text
         else { return }
         
-        if a {
-            interactor.processResultAndHistory(label: labelTitle, labelBtn: btn)
-            
-            if btn == .equal {
-                a = false
-            }
+        if btn == .equal {
+            interactor.calculateAndAddToHistory(label: labelTitle)
         }else {
-            if btn == .equal {
-                
-                a = false
-                
-            }else {
-                
-                if
-                    [CButton.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, CButton.zero].contains(btn) ||
-                        (label.text != nil && label.text!.last != nil && label.text!.last!.isLetter)
-                {
-                    interactor.processResultAndHistory(label: "0", labelBtn: btn)
-                    a = true
-                }else {
-                    interactor.processResultAndHistory(label: labelTitle, labelBtn: btn)
-                }
-                
-                a = true
-                
-            }
+            interactor.addButtonToLabel(label: labelTitle, labelBtn: btn)
         }
-       
         
+    }
+    
+    @objc func clearAllHistory() {
         
-//        interactor.processResult(label: labelTitle, labelBtn: btn)
-
+        let alert = UIAlertController(
+            title: "Clear History",
+            message: "Do you want to clear history?",
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "Delete",
+            style: .destructive,
+            handler: { [weak self] action in
+                self?.interactor.clearHistory()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
-//MARK: Extension For Preview
+
+//MARK: -Extension For Displaying
 extension HomeViewController: HomeViewProtocol {
     
-    
     func displayHistory(calculations: [Calculation]) {
-        
         self.calculations.removeAll()
-        
         self.calculations = calculations
-        
         tableView.reloadData()
-
+        
         DispatchQueue.main.async {
             let lastIndex = IndexPath(row: self.calculations.count - 1, section: 0)
             if self.calculations.count > 0 {
                 self.tableView.scrollToRow(at: lastIndex, at: .bottom, animated: false)
             }
         }
-
         tableView.reloadData()
     }
     
-    
-    func displayResult(result: String) {
-        
+    func displayLabelResult(result: String) {
         label.text = result
         updateLabelSize()
     }
     
-    func setNumberPadStackView(from structure: [[CButton]], isRemoveAllEmentsFromStack: Bool) {
-        
-        if isRemoveAllEmentsFromStack {
-            resetView()
-        }
+    func displayNumberPadStackView(from structure: [[CButton]]) {
         for row in structure {
             let rowStackView = StackView(axis: .horizontal, spacing: .spacing(.x2))
             
             for label in row {
-                let button = CalculatorButton(button: label, type: .system)
+                let button = CalculatorButton(button: label)
                 button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
                 rowStackView.addArrangedSubview(button)
             }
             numberPadStackView.addArrangedSubview(rowStackView)
         }
     }
+    
 }
 
 
-//MARK: Extension For TableView
+//MARK: -Extension For TableView
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return calculations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell",
+                                                 for: indexPath) as! CustomTableViewCell
         let calculation = calculations[indexPath.row]
         
-       // print(calculation.expression ?? "1+1")
-        
-        cell.configure(calculationStr: calculation.expression ?? "1+2=3", date: (calculation.date ?? Date()).settedFormat)
-        
+        cell.configure(calculationStr: calculation.expression ?? "1+2=3",
+                       date: (calculation.date ?? Date()).settedFormat)
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            interactor.deleteCalculation(indexPath: indexPath.row, items: calculations)
-        }
+    if editingStyle == .delete {
+        interactor.delateCalculation(indexPath: indexPath.row, items: calculations)
     }
-    
+}
     
 }
 
