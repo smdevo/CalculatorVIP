@@ -10,13 +10,10 @@ import CoreData
 
 protocol HistoryDataServiseProtocol {
     
-    //read
     func fetchHistory() -> [Calculation]
     
-    //create
     func saveCalculation(calculationStr: String)
     
-    //delete
     func removeCalculation(indexPath: Int, items: [Calculation])
     
     func clearHistory()

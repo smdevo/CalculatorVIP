@@ -9,7 +9,6 @@
 import UIKit
 
 extension  UIView {
-    
     func setConstraints(
         helperView hv: UIView,
         isFromSafeArea: Bool = false,
@@ -26,10 +25,9 @@ extension  UIView {
         hGTAnchor: Bool = false,
         wGTAnchor: Bool = false
     ){
-        
         translatesAutoresizingMaskIntoConstraints = false
         
-        //MARK: Simple
+        //MARK: -Simple
         if let left {
             leadingAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.leadingAnchor : hv.leadingAnchor,
@@ -51,7 +49,7 @@ extension  UIView {
                 constant: bottom).isActive = true
         }
         
-        //MARK: width, Height
+        //MARK: -width, Height
         if let height {
             heightAnchor.constraint(equalToConstant: height).isActive = true
         }
@@ -66,8 +64,7 @@ extension  UIView {
             widthAnchor.constraint(greaterThanOrEqualTo: hv.widthAnchor).isActive = true
         }
         
-        
-        //MARK: Reverse
+        //MARK: -Reverse
         if let leftToRight {
             leadingAnchor.constraint(
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.trailingAnchor : hv.trailingAnchor,
@@ -88,10 +85,7 @@ extension  UIView {
                 equalTo: isFromSafeArea ? hv.safeAreaLayoutGuide.topAnchor : hv.topAnchor,
                 constant: bottomToTop).isActive = true
         }
-        
     }
-
-    
 }
 
 

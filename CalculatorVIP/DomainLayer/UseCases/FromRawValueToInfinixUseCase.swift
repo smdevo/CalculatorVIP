@@ -13,18 +13,16 @@ protocol FromRawValueToInfixProtocol {
 
 struct FromRawValueToInfinixUseCase: FromRawValueToInfixProtocol {
     
+    ///From this      "5+4+((((((((("      to ->      "5+4"
     func makingInfixFromRaw(rawValue: String) -> String {
         let cleanStr    = cleanEnd(str: rawValue)
         let completeStr = addingNeededBrackets(str: cleanStr)
         return completeStr
     }
     
-    
-    //Helper functions
-
     private func cleanEnd(str: String) -> String {
         var newStr = str
-        while Op.withDotOpBr.r.contains(newStr.last ?? "0") { // "÷×－+(" dont contain 0 so it will leave
+        while Op.withDotOpBr.r.contains(newStr.last ?? "0") {
             newStr = newStr.withoutLastElement
         }
         return newStr.isEmpty ? "0" : newStr

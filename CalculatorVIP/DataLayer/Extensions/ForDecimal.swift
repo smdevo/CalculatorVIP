@@ -10,8 +10,7 @@
 import Foundation
 
 extension Decimal {
-    
-    var strDesc: String {
+    var formattedDecimal: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = self > 1 ? 7 : 10
@@ -20,12 +19,11 @@ extension Decimal {
 
         let nsDecimal = self as NSDecimalNumber
         let doubleValue = nsDecimal.doubleValue
-
+        
         if (abs(doubleValue) >= 1e8 || abs(doubleValue) <= 1e-8) && self != 0  {
             formatter.numberStyle = .scientific
             formatter.exponentSymbol = "e"
         }
-
         return formatter.string(from: nsDecimal) ?? self.description
     }
 }

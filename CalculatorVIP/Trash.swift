@@ -121,3 +121,57 @@
 //        return formatter.string(from: self as NSDecimalNumber) ?? self.description
 //    }
 //}
+
+
+//            if !label.filter({$0.isLetter}).isEmpty {
+//                otherB = false
+//            }
+            
+//            if label.filter({$0.isNumber}).isEmpty {
+//                otherB = false
+//            }
+
+
+//private func infixToPostFix(_ expression: String) -> [String] {
+//    
+//    let arrElements = fromStringToArrayUseCase.fromStringToElementsOfArray(value: expression)
+//            
+//    let precedence: [String: Int] =
+//    [
+//        CButton.add.r: 1,
+//        CButton.minus.r: 1,
+//        CButton.multiply.r: 2,
+//        CButton.divide.r: 2
+//    ]
+//    var postFix = CustomStack<String>()
+//    var opers   = CustomStack<String>()
+//    
+//    for element in arrElements {
+//        
+//        if let _ = Double(element) {
+//            postFix.push(element: element)
+//        } else if let _ = precedence[element] {
+//            while let last = opers.peak(),
+//                    let lastPrec = precedence[last],
+//                    lastPrec >= precedence[element]!
+//            {
+//                postFix.push(element: opers.pop()!)
+//            }
+//            opers.push(element: element)
+//        } else if element == "(" {
+//            opers.push(element: element)
+//        } else if element == ")" {
+//            while let last = opers.peak(), last != "(" {
+//                postFix.push(element: opers.pop()!)
+//            }
+//            let _ = opers.pop()
+//        }
+//    }
+//    
+//    while let last = opers.pop() {
+//        postFix.push(element: last)
+//    }
+//    
+//    
+//    return postFix.allElements()
+//}

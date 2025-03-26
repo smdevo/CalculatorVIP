@@ -8,13 +8,10 @@
 import Foundation
 
 extension Date {
-    
-    var settedFormat: String {
+    var betterFormat: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yy  HH:mm"
         formatter.timeZone = .current
         return formatter.string(from: self)
-        
     }
-    
 }

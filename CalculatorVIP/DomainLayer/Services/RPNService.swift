@@ -15,82 +15,97 @@ protocol RPNServiceProtocol {
 
 final class RPNService: RPNServiceProtocol {
     
-    
     private let infixFromRawValueUseCase = FromRawValueToInfinixUseCase()
     private let fromStringToArrayUseCase = FromStringToArrayUseCase()
     
     func calculateAndGiveTheResult(calcLabel: String) -> (String?, String?) {
         
-        if extractingComponents(str: calcLabel).count == 1 {
-            print("First \(calcLabel)")
+        if onlyNumbers(str: calcLabel).count <= 1 {
             return (nil,nil)
         }
         
-        print("Raw Value: \(calcLabel)")
+        print("Raw Value: \(calcLabel)\n")
         
         let infix = infixFromRawValueUseCase.makingInfixFromRaw(rawValue: calcLabel)
+        print("Infinix: \(infix)\n")
         
-        print("Infinix: \(infix)")
-        
-        let postfix = infinixToPostFix(infix)
-        print("Postfix: \(postfix)")
+        let postfix = infixToPostFix(infix)
+
         
         guard let calculatedResult = calculateRPN(postFix: postfix) else {
-            return ("Undefined",infix)
+            return (Constants.undefined.rawValue,infix)
         }
         
-        return (calculatedResult.strDesc, infix)
+        return (calculatedResult.formattedDecimal, infix)
     }
     
     
     
-    private func infinixToPostFix(_ expression: String) -> [String] {
+    private func infixToPostFix(_ expression: String) -> [String] {
         
         let arrElements = fromStringToArrayUseCase.fromStringToElementsOfArray(value: expression)
                 
         let precedence: [String: Int] =
-        [CButton.add.r: 1, CButton.minus.r: 1, CButton.multiply.r: 2, CButton.divide.r: 2]
-        var postFix = CustomStack<String>()
-        var opers   = CustomStack<String>()
+        [
+            CButton.add.r: 1,
+            CButton.minus.r: 1,
+            CButton.multiply.r: 2,
+            CButton.divide.r: 2
+        ]
+        
+        var postFix = CustomStack<String>(identifier: "post Arr")
+        var opers   = CustomStack<String>(identifier: "oper Arr")
         
         for element in arrElements {
             
-            if let _ = Double(element) {
-                postFix.push(element: element)
-            } else if let _ = precedence[element] {
-                while let last = opers.peek(),
-                        let lastPrec = precedence[last],
-                        lastPrec >= precedence[element]!
+            if Double(element) != nil {
+                
+                postFix.push(element)
+                
+            } else if Op.only.r.contains(element) {
+                
+                while
+                    let last = opers.peek,
+                    let lastPrec = precedence[last],
+                    lastPrec >= precedence[element]!
                 {
-                    postFix.push(element: opers.pop()!)
+                    postFix.push(opers.pop()!)
                 }
-                opers.push(element: element) // Operatorni stack ga qo‘shamiz
-            } else if element == "(" {
-                opers.push(element: element) // Ochuvchi qavsni stack ga qo‘shamiz
-            } else if element == ")" {
-                while let last = opers.peek(), last != "(" {
-                    postFix.push(element: opers.pop()!)//.append("\(stack.popLast()!)")
+                
+                opers.push(element)
+                
+            } else if
+                element == CButton.openBr.r
+            {
+                opers.push(element)
+            } else if
+                element == CButton.closeBr.r
+            {
+                while
+                    let last = opers.peek,
+                    last != CButton.openBr.r
+                {
+                    postFix.push(opers.pop()!)
                 }
-                let _ = opers.pop()//.popLast() // Ochuvchi qavsni olib tashlaymiz
+                let _ = opers.pop()
             }
+            
         }
         
-        while let last = opers.pop() {//.popLast() {
-            postFix.push(element: last)//.append("\(last)")
+        while let last = opers.pop() {
+            postFix.push(last)
         }
-        
-        
-        return postFix.allElements()
+        return postFix.allElements
     }
     
     private func calculateRPN(postFix: [String]) -> Decimal? {
         
-        var customStack = CustomStack<Decimal>()
+        var customStack = CustomStack<Decimal>(identifier: "Calculation")
         
         for eachElement in postFix {
             
             if let number = Double(eachElement) {
-                customStack.push(element: Decimal(number))
+                customStack.push(Decimal(number))
             }else {
                 guard
                 let last = customStack.pop(),
@@ -99,18 +114,20 @@ final class RPNService: RPNServiceProtocol {
                     return nil
                 }
                 switch eachElement {
-                case CButton.divide.r:   customStack.push(element: bLast / last)
-                case CButton.multiply.r: customStack.push(element: bLast * last)
-                case CButton.minus.r:    customStack.push(element: bLast - last)
-                case CButton.add.r:      customStack.push(element: bLast + last)
+                case CButton.divide.r:
+                    guard last != 0 else { return nil }
+                    customStack.push(bLast / last)
+                case CButton.multiply.r: customStack.push(bLast * last)
+                case CButton.minus.r:    customStack.push(bLast - last)
+                case CButton.add.r:      customStack.push(bLast + last)
                 default: break
                 }
             }
         }
-        return customStack.peek()
+        return customStack.peek
     }
     
-    private func extractingComponents(str: String) -> [String] {
+    private func onlyNumbers(str: String) -> [String] {
         let operators = CharacterSet(charactersIn: Op.withBrs.r)
         let components = str.components(separatedBy: operators)
         return components.filter {!$0.isEmpty}

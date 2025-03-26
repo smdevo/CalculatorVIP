@@ -7,49 +7,163 @@
 
 import Foundation
 
-//LIFO
-/*
- 1. Function Call Management
- When a function is called, its local variables, parameters, and return address are stored in the call stack.
- When the function completes, its data is removed from the stack.
- This allows for nested function calls and recursion to work properly.
- 
- 2. Efficient Memory Allocation
- The stack operates in a Last In, First Out (LIFO) manner, meaning the most recently added data is removed first.
- Memory allocation and deallocation on the stack are fast because they follow a simple push/pop operation.
- 
- */
+
 struct CustomStack<T> {
     
-   // let postFixElements: [String]
+    private var elements: [T] = [] {
+        didSet { showElements() }
+    }
     
-   private var elements: [T] = []
+    private let identifier: String
     
+    init(identifier: String = "Stack") {
+        self.identifier = identifier
+    }
     
-    mutating func push(element: T) {
+    mutating func push(_ element: T) {
         elements.append(element)
     }
     
     mutating func pop() -> T? {
-        
-        if elements.isEmpty {
-            return nil
-        }
-        return elements.removeLast()
+        elements.popLast()
     }
     
-    func peek() -> T? {
-            return elements.last
-        }
-    
-    func isEmpty() -> Bool {
-            return elements.isEmpty
-        }
-    
-    func allElements() -> [T] {
-        return elements
+    var peek: T? {
+        elements.last
     }
     
+    var isEmpty: Bool {
+        elements.isEmpty
+    }
+    
+    var allElements: [T] {
+        elements
+    }
+    
+    private func showElements() {
+        print("\(identifier): \(elements)")
+    }
 }
 
 
+
+
+//struct CustomStack<T> {
+//        
+//    private var elements: [T] = [] {
+//        didSet {
+//            showElements()
+//        }
+//    }
+//    
+//    mutating func push(element: T) {
+//        elements.append(element)
+//    }
+//    
+//    mutating func pop() -> T? {
+//        
+//        if elements.isEmpty {
+//            return nil
+//        }
+//        return elements.removeLast()
+//    }
+//    
+//    func peak() -> T? {
+//            return elements.last
+//        }
+//    
+//    func isEmpty() -> Bool {
+//            return elements.isEmpty
+//        }
+//    
+//    func allElements() -> [T] {
+//        return elements
+//    }
+//    
+//    
+//    private func showElements() {
+//        print("Calculation \(elements)")
+//    }
+//    
+//}
+//
+//
+//
+//struct CustomStackForOP<T> {
+//        
+//    private var elements: [T] = [] {
+//        didSet {
+//            showElements()
+//        }
+//    }
+//    
+//    
+//    mutating func push(element: T) {
+//        elements.append(element)
+//    }
+//    
+//    mutating func pop() -> T? {
+//        
+//        if elements.isEmpty {
+//            return nil
+//        }
+//        return elements.removeLast()
+//    }
+//    
+//    func peak() -> T? {
+//            return elements.last
+//        }
+//    
+//    func isEmpty() -> Bool {
+//            return elements.isEmpty
+//        }
+//    
+//    func allElements() -> [T] {
+//        return elements
+//    }
+//    
+//    private func showElements() {
+//        print("Oper Arr \(elements)")
+//    }
+//}
+//
+//
+//struct CustomStackForPostFix<T> {
+//    
+//    
+//    private var elements: [T] = [] {
+//        didSet {
+//            showElements()
+//        }
+//    }
+//    
+//    mutating func push(element: T) {
+//        elements.append(element)
+//    }
+//    
+//    mutating func pop() -> T? {
+//        
+//        if elements.isEmpty {
+//            return nil
+//        }
+//        return elements.removeLast()
+//    }
+//    
+//    func peak() -> T? {
+//            return elements.last
+//        }
+//    
+//    func isEmpty() -> Bool {
+//            return elements.isEmpty
+//        }
+//    
+//    func allElements() -> [T] {
+//        return elements
+//    }
+//    
+//    private func showElements() {
+//        print("Post Arr \(elements)")
+//    }
+//}
+//
+//

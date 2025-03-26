@@ -8,11 +8,8 @@
 import UIKit
 
 extension UIColor {
-    
     static var theme = ColorTheme()
-    
 }
-
 
 struct ColorTheme {
     let backgroundColor = UIColor(named: "calcBackgroundColor") ?? .black

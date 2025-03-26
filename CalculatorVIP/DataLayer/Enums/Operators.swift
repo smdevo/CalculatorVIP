@@ -15,7 +15,7 @@ enum Op: String {
     case withClBr     = "÷×-+)"
     case withBrs      = "÷×-+()"
     case all          = "÷×-+()."
-    
+    case numbers      = "0123456789"
     
     var r: String {
         rawValue

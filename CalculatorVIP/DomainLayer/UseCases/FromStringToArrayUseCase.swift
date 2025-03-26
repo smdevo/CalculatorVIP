@@ -12,6 +12,8 @@ protocol FromStringToArrayProtocol {
 
 struct FromStringToArrayUseCase: FromStringToArrayProtocol {
     
+    ///"44+3   ->  ["44","+","3"]
+    ///-5+9     ->   ["0","-","5","+","9"]
     func fromStringToElementsOfArray(value: String) -> [String] {
         
         var strArr: [String] = []
@@ -20,15 +22,16 @@ struct FromStringToArrayUseCase: FromStringToArrayProtocol {
         
         
         if let first = value.first {
-            if first == "-" {
-                strArr.append("0")
+            if first == Character(CButton.minus.r) {
+                strArr.append(CButton.zero.r)
             }
         }
         
         var oneBeforeEl: Character? = nil
         
         for char in value {
-            if char.isNumber || char == "." {
+            if char.isNumber || char == "." || char == "e" ||
+                (oneBeforeEl ?? "a" == "e" && char == "-") {
                 number.append(char)
             } else {
                 if !number.isEmpty {
@@ -44,17 +47,13 @@ struct FromStringToArrayUseCase: FromStringToArrayProtocol {
                     strArr.append(char.intoString)
                 }
             }
-            
             oneBeforeEl = char
         }
         
         if !number.isEmpty {
             strArr.append(number)
         }
-        
         return strArr
     }
-
-    
 }
 

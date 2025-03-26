@@ -22,18 +22,11 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Dependencies
     var interactor: HomeInteractorProtocol
-    var router: HomeRouterProtocol
     
     
     // MARK: - Data
     private var calculations: [Calculation] = []
 
-    
-    
-    var a: Bool = true
-    var b: Bool = true
-    
-    var didCalculate: Bool = false
     
     // MARK: - UI Elements
     
@@ -74,17 +67,13 @@ final class HomeViewController: UIViewController {
 
     private let numberPadStackView: UIStackView = CustomStackView(spacing: .spacing(.x2))
     
-
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
     }
 
-    init(interactor: HomeInteractorProtocol, router: HomeRouterProtocol) {
+    init(interactor: HomeInteractorProtocol) {
         self.interactor = interactor
-        self.router = router
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -159,7 +148,7 @@ final class HomeViewController: UIViewController {
             bottomToTop: 0)
     }
     
-    private func updateLabelSize() {
+    private func updateLabelSizeForScrollView() {
         let textSize = label.intrinsicContentSize
         let maxWidth = max(textSize.width, scrollViewForLabel.frame.width)
         
@@ -168,7 +157,7 @@ final class HomeViewController: UIViewController {
             width: maxWidth,
             height: scrollViewForLabel.frame.height
         )
-        // Scroll to the rightmost part (show latest input)
+        
         let offsetMax = max(scrollViewForLabel.contentSize.width - scrollViewForLabel.frame.width, 0)
         let offset = CGPoint(x: offsetMax, y: 0)
         
@@ -181,34 +170,7 @@ final class HomeViewController: UIViewController {
             let btn = CButton(rawValue: buttonTitle),
             let labelTitle = label.text
         else { return }
-        
-        if btn == .equal {
-            if a {
-                interactor.calculateAndAddToHistory(label: labelTitle)
-                b = false
-            }
-            a = false
-        }else {
-            if !"0123456789".contains(btn.r) {
-                
-                print(labelTitle)
-                
-                b = true
-            }
-            
-            if !labelTitle.filter({$0.isLetter}).isEmpty {
-                
-                b = false
-            }
-            
-            if b {
-                interactor.addButtonToLabel(label: labelTitle, labelBtn: btn)
-            }else {
-                interactor.addButtonToLabel(label: "0", labelBtn: btn)
-                b = true
-            }
-            a = true
-        }
+        interactor.addOrCalculateResult(label: labelTitle, labelBtn: btn)
     }
     
     @objc func clearAllHistory() {
@@ -236,7 +198,7 @@ extension HomeViewController: HomeViewProtocol {
     
     func displayLabelResult(result: String) {
         label.text = result
-        updateLabelSize()
+        updateLabelSizeForScrollView()
     }
     
     func displayNumberPadStackView(from structure: [[CButton]]) {
@@ -290,7 +252,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let calculation = calculations[indexPath.row]
         
         cell.configure(calculationStr: calculation.expression ?? "1+2=3",
-                       date: (calculation.date ?? Date()).settedFormat)
+                       date: (calculation.date ?? Date()).betterFormat)
         return cell
     }
     

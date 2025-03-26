@@ -18,23 +18,18 @@ final class InputSourceService: InputSourceServiceProtocol {
         
         typealias B = CButton
         
-        guard let lastChar = label.last else {return nil}
+        guard let lastChar = label.last else { return nil }
         let lastElement = lastChar.intoString
         switch labelBtn {
             
-      //1
         case .clear:
-            
             return  B.zero.r
             
-           // return label != B.zero.r ? B.zero.r : nil
             
-            
-      //2
         case .delete:
             return label.count == 1 ? B.zero.r : label.withoutLastElement
             
-       //3
+            
         case .openBr:
             
             if label == B.minus.r {
@@ -55,7 +50,6 @@ final class InputSourceService: InputSourceServiceProtocol {
             return label + B.openBr.r
             
             
-        //4
         case .closeBr:
             
             if !checkingForCloseTheBracket(str: label) {
@@ -72,13 +66,12 @@ final class InputSourceService: InputSourceServiceProtocol {
                 if (label.withoutLastElement.last ?? "0").intoString == B.openBr.r {
                     return label.withoutLastElement
                 }
-                
                 return label.withoutLastElement + B.closeBr.r
             }
             
             return label + B.closeBr.r
             
-        //5
+            
         case .add, .multiply, .divide:
             
             if lastElement == B.openBr.r {return nil}
@@ -97,8 +90,8 @@ final class InputSourceService: InputSourceServiceProtocol {
             }
             
             return label + labelBtn.r
-        
-        //6
+            
+            
         case .minus:
             
             if label == B.zero.r {
@@ -114,7 +107,7 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             return label + labelBtn.r
             
-        //7
+            
         case .dot:
             
             if Op.withOpBr.r.contains(lastElement) {return label + B.zero.r + B.dot.r}
@@ -128,7 +121,6 @@ final class InputSourceService: InputSourceServiceProtocol {
             return label + B.dot.r
             
             
-        //8
         default:
             
             if label == B.zero.r { return labelBtn.r }
@@ -144,7 +136,6 @@ final class InputSourceService: InputSourceServiceProtocol {
                 lastElement == B.closeBr.r  {
                 return label + B.multiply.r + labelBtn.r
             }
-            
             return label + labelBtn.r
         }
     }
@@ -164,10 +155,3 @@ final class InputSourceService: InputSourceServiceProtocol {
         return cleanComps.last
     }
 }
-
-
-
-
-//protocol ZeroProviderProtocol
-//
-//struct ZeroProvider: ZeroProviderProtocol
