@@ -24,7 +24,7 @@ final class RPNService: RPNServiceProtocol {
             return (nil,nil)
         }
         
-        print("Raw Value: \(calcLabel)\n")
+        print("\nRaw Value: \(calcLabel)\n")
         
         let infix = infixFromRawValueUseCase.makingInfixFromRaw(rawValue: calcLabel)
         print("Infinix: \(infix)\n")

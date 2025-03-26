@@ -31,7 +31,7 @@ struct FromStringToArrayUseCase: FromStringToArrayProtocol {
         
         for char in value {
             if char.isNumber || char == "." || char == "e" ||
-                (oneBeforeEl ?? "a" == "e" && char == "-") {
+                (oneBeforeEl ?? "0" == "e" && char == "-") {
                 number.append(char)
             } else {
                 if !number.isEmpty {
