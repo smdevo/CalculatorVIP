@@ -10,6 +10,7 @@ protocol HomePresenterProtocol {
     func presentResult(result: String)
     func presentNumberPadStackView()
     func presentHistory(calculations: [Calculation])
+    func presentAlert()
 }
 
 final class HomePresenter {
@@ -37,6 +38,10 @@ extension HomePresenter: HomePresenterProtocol {
     
     func presentNumberPadStackView() {
         view?.displayNumberPadStackView(from: portaitStructure)
+    }
+    
+    func presentAlert() {
+        view?.displayAlert()
     }
 }
 

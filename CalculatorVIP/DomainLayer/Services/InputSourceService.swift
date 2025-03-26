@@ -68,6 +68,11 @@ final class InputSourceService: InputSourceServiceProtocol {
             
             if
                 Op.withDot.r.contains(lastElement) {
+                
+                if (label.withoutLastElement.last ?? "0").intoString == B.openBr.r {
+                    return label.withoutLastElement
+                }
+                
                 return label.withoutLastElement + B.closeBr.r
             }
             

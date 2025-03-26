@@ -13,6 +13,7 @@ protocol HomeInteractorProtocol {
     func calculateAndAddToHistory(label: String)
     func delateCalculation(indexPath: Int, items: [Calculation])
     func clearHistory()
+    func askIfClearingHistory()
 }
 
 final class HomeInteractor {
@@ -59,6 +60,10 @@ extension HomeInteractor: HomeInteractorProtocol {
     func clearHistory() {
         worker.clearHistory()
         fetchAndGiveHistoryToPresenter()
+    }
+    
+    func askIfClearingHistory() {
+        presenter.presentAlert()
     }
     
     

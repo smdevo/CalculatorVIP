@@ -5,6 +5,8 @@
 //  Created by Samandar on 25/03/25.
 //
 
+
+
 import Foundation
 
 extension Decimal {
@@ -12,17 +14,18 @@ extension Decimal {
     var strDesc: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
+        formatter.maximumFractionDigits = self > 1 ? 7 : 10
         formatter.decimalSeparator = "."
-        formatter.groupingSeparator = ""     // Avoids spaces in large numbers
-        
-        if self.exponent >= 8 || self.exponent <= -8 {
+        formatter.groupingSeparator = ""
+
+        let nsDecimal = self as NSDecimalNumber
+        let doubleValue = nsDecimal.doubleValue
+
+        if (abs(doubleValue) >= 1e8 || abs(doubleValue) <= 1e-8) && self != 0  {
             formatter.numberStyle = .scientific
             formatter.exponentSymbol = "e"
         }
 
-        print("Raw Decimal: \(self)") // Debugging print
-        
-        return formatter.string(from: self as NSDecimalNumber) ?? self.description
+        return formatter.string(from: nsDecimal) ?? self.description
     }
 }

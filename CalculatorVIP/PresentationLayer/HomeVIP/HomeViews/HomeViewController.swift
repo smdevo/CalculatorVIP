@@ -14,6 +14,7 @@ protocol HomeViewProtocol: AnyObject {
     func displayLabelResult(result: String)
     func displayNumberPadStackView(from structure: [[CButton]])
     func displayHistory(calculations: [Calculation])
+    func displayAlert()
 }
 
 //MARK: View
@@ -30,6 +31,9 @@ final class HomeViewController: UIViewController {
     
     
     var a: Bool = true
+    var b: Bool = true
+    
+    var didCalculate: Bool = false
     
     // MARK: - UI Elements
     
@@ -179,30 +183,36 @@ final class HomeViewController: UIViewController {
         else { return }
         
         if btn == .equal {
-            interactor.calculateAndAddToHistory(label: labelTitle)
+            if a {
+                interactor.calculateAndAddToHistory(label: labelTitle)
+                b = false
+            }
+            a = false
         }else {
-            interactor.addButtonToLabel(label: labelTitle, labelBtn: btn)
+            if !"0123456789".contains(btn.r) {
+                
+                print(labelTitle)
+                
+                b = true
+            }
+            
+            if !labelTitle.filter({$0.isLetter}).isEmpty {
+                
+                b = false
+            }
+            
+            if b {
+                interactor.addButtonToLabel(label: labelTitle, labelBtn: btn)
+            }else {
+                interactor.addButtonToLabel(label: "0", labelBtn: btn)
+                b = true
+            }
+            a = true
         }
-        
     }
     
     @objc func clearAllHistory() {
-        
-        let alert = UIAlertController(
-            title: "Clear History",
-            message: "Do you want to clear history?",
-            preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(
-            title: "Delete",
-            style: .destructive,
-            handler: { [weak self] action in
-                self?.interactor.clearHistory()
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
-        present(alert, animated: true, completion: nil)
+        interactor.askIfClearingHistory()
     }
 }
 
@@ -240,6 +250,26 @@ extension HomeViewController: HomeViewProtocol {
             }
             numberPadStackView.addArrangedSubview(rowStackView)
         }
+    }
+    
+    func displayAlert() {
+        
+        let alert = UIAlertController(
+            title: "Clear History",
+            message: "Do you want to clear history?",
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "Delete",
+            style: .destructive,
+            handler: { [weak self] action in
+                self?.interactor.clearHistory()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true, completion: nil)
+        
     }
     
 }

@@ -51,7 +51,7 @@ final class RPNService: RPNServiceProtocol {
         let precedence: [String: Int] =
         [CButton.add.r: 1, CButton.minus.r: 1, CButton.multiply.r: 2, CButton.divide.r: 2]
         var postFix = CustomStack<String>()
-        var opers = CustomStack<String>()
+        var opers   = CustomStack<String>()
         
         for element in arrElements {
             
